@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+.home{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-gap: 10px;
+    grid-template-areas: "left middle right";
+  font-family: 'Inter', sans-serif;
+    height: 100vh;
+   
+}
+
+.item1{
+    grid-area: left;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.one-desc{
+    margin: 20px 0;
+    line-height: 24px;
+}
+
+.one-family{
+    display: flex;
+    justify-content: space-between;
+}
+
+.item2{
+    grid-area: middle;
+    display: flex;
+    justify-content: center;
+}
+
+.flower{
+    height: 750px;
+}
+
+.flower img{
+    width: 100%;
+    border-radius: 0;
+    height: 750px;
+    object-fit: cover;
+}
+
+.slide-itself{
+    height: 100vh;
+}
+
+.item3{
+    grid-area: right;
+}
+.carousel-container{
+    width: 80%;
+    position: relative;
+    background-color: aqua;
+   
+}
+.carousel-buttons{
+    position: absolute;
+    background-color: green;
+    top: 0;
+    left: 0;
+}
