@@ -1,0 +1,21 @@
+nav{
+  position: absolute;  
+  right: 0;
+  top: 0;
+  
+}
+
+ul{
+    display: flex;
+
+}
+
+li{
+    list-style: none;
+    
+}
+.nav-avatar{
+height: 40px;
+width: 40px;
+}
+
