@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
 import Button from "./Button";
-import background from "../assets/background.jpeg";
+
 
 function Login(props) {
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -36,10 +36,10 @@ function Login(props) {
   }
 
   return (
-    <div className="login" style={{ backgroundImage: `url(${background})` }}>
+    <div className="login" style={{ backgroundImage: `url(/assets/background.jpeg)` }}>
       <div className="login-container">
         <div className="login-image">
-          <img src={background} />
+          <img src={"/assets/background.jpeg"} />
         </div>
         <div className="login-name">
           <h3>Maua</h3>
