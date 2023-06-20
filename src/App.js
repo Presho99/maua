@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import Home from "./Components/Home";
-import background from '../src/assets/background.jpeg'
+
 import Login from "./Components/Login";
 import MainHeader from './Components/MainHeader';
 
