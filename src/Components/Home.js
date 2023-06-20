@@ -109,14 +109,20 @@ const flowers = [
 
 function Home() {
   const [active, setActive] = useState(0);
-  const [springs, springsAPI] = useSprings(10, (i) => ({
-   from: { opacity: active === i ? 1 : 0,
-    color: active === i ? "#ED5079" : "pink"},
-    reset: true
-  }), [active]);
+  const [springs, springsAPI] = useSprings(
+    10,
+    (i) => ({
+      from: {
+        opacity: active === i ? 1 : 0,
+        color: active === i ? "#ED5079" : "pink",
+      },
+      reset: true,
+    }),
+    [active]
+  );
 
   useEffect(() => {
-    springsAPI.stop()
+    springsAPI.stop();
     springsAPI.start((i) => {
       if (i === active) {
         return {
@@ -126,7 +132,6 @@ function Home() {
           config: {
             duration: 600,
           },
-          
         };
       } else if (i % 10 === (active + 1) % 10) {
         return {
@@ -155,11 +160,16 @@ function Home() {
   return (
     <div className="home">
       <div className="controls">
-      {springs.map(({opacity, color}, i) => {
-       return <animated.div onClick={()=> setActive(i)}>
-         <animated.div className="circle" style={{background: color}}></animated.div>
-       </animated.div>
-      })}
+        {springs.map(({ opacity, color }, i) => {
+          return (
+            <animated.div onClick={() => setActive(i)}>
+              <animated.div
+                className="circle"
+                style={{ background: color }}
+              ></animated.div>
+            </animated.div>
+          );
+        })}
       </div>
       {springs.map(({ opacity }, i) => {
         return (
@@ -181,7 +191,6 @@ function Home() {
                   <p>{flowers[i].family}</p>
                 </div>
               </div>
-            
             </div>
             <div className="item item2">
               <div className="carousel">
@@ -191,7 +200,25 @@ function Home() {
               </div>
             </div>
             <div className="item item3">
-              <div className="magnified-image"></div>
+              <div className="flower-deets">
+                <div className="mini-carousel">
+                  <img src="/assets/orchids.jpeg" />
+                </div>
+                <div className="quote">
+                  <p>Symbols: "Devotion, love, beauty, dignity",</p>
+                </div>
+                <div className="price">
+                  <div className="number">
+                    <h3>$149</h3>
+                  </div>
+                  <div className="price-form">
+                    <button>-</button>
+                    <p>1</p>
+                    <button>+</button>
+                  </div>
+                </div>
+              </div>
+              <button className="item3-button">Add to Cart</button>
             </div>
           </animated.div>
         );
