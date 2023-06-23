@@ -6,17 +6,18 @@ import { faCartShopping, faCoffee } from "@fortawesome/free-solid-svg-icons";
 function Navigation(props) {
   return (
     <nav>
-      <ul>
-        {props.isLoggedIn && (
-          <div className="searchbar ui segment">
-              <form className="ui form">
-                  <div className="field">
-                     <input type="text"/> 
-                  </div>
+      
+        <div>
+          {props.isLoggedIn && (
+            <div className="searchbar">
+              <form className="ui form search-form">
+                <input type="text" placeholder="Search" />
               </form>
-           
-          </div>
-        )}
+            </div>
+          )}
+        </div>
+        <ul>
+        <div className="nav-buttons">
         {props.isLoggedIn && (
           <li>
             <img src={"/assets/background.jpeg"} className="nav-avatar" />
@@ -34,6 +35,9 @@ function Navigation(props) {
             <button onClick={props.onLogout}>Logout</button>
           </li>
         )}
+        </div>
+
+       
       </ul>
     </nav>
   );

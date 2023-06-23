@@ -115,6 +115,8 @@ function Home() {
       from: {
         opacity: active === i ? 1 : 0,
         color: active === i ? "#ED5079" : "pink",
+        width: active === i ? 200 : 0,
+        width2: active === i ? 90 : 0,
       },
       reset: true,
     }),
@@ -199,17 +201,48 @@ function Home() {
                 </animated.div>
               </div>
             </div>
+
+            {/* Add to Cart Div */}
             <div className="item item3">
               <div className="flower-deets">
-                <div className="mini-carousel">
-                  <img src="/assets/orchids.jpeg" />
+                <div className="mini-carousel-container">
+                {springs.map(({ width, width2 }, i) => {
+                  return (
+                    <animated.div className="mini-carousel" style={{
+                      opacity: i === active ? 1 : 0
+                      }}>
+                      <animated.div className="mini-main" style={{
+                        backgroundImage: `url(${flowers[i].image})`, 
+                        // width: width.to(w => (`${w}px`)),
+                        marginRight: "10px",
+                        
+                        width: "200px"
+                        
+                        }}>
+                       
+                      </animated.div>
+                      <animated.div className="mini-main" style={{
+                        backgroundImage: `url(${flowers[(i+1)%10].image})`,
+                        // width: width2.to(w => (`${w}px`)),
+                        width: "90px",
+                        right: 0
+                  
+                        }}>
+
+                      
+                      </animated.div>
+                    </animated.div>
+                  );
+                })}
                 </div>
+               
+
                 <div className="quote">
-                  <p>Symbols: "Devotion, love, beauty, dignity",</p>
+                  <p>Symbols: {flowers[i].symbols}</p>
                 </div>
                 <div className="price">
                   <div className="number">
-                    <h3>$149</h3>
+                    <h3>${flowers[i].price}</h3>
                   </div>
                   <div className="price-form">
                     <button>-</button>
