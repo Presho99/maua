@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
 import Button from "./Button";
-
+import ErrorModal from "./ErrorModal";
 
 function Login(props) {
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -9,6 +9,7 @@ function Login(props) {
   const [password, setPassword] = useState("");
   const [validPassword, setValidPassword] = useState();
   const [validForm, setValidForm] = useState(false);
+  const [error, setError] = useState()
 
   const emailChangeHandler = (e) => {
     setEnteredEmail(e.target.value);
@@ -32,16 +33,29 @@ function Login(props) {
 
   const submitHandler = (e) => {
     e.preventDefault()
+    if(enteredEmail.trim().length === 0 || password.trim().length === 0){
+      setError({
+        title: 'Invalid input',
+        message: 'Please enter a valid email address and password (non-empty values)'
+      })
+    }else if(password.trim().length <8){
+      setError({
+        title: 'Invalid password',
+        message: 'Password should be at least 8 characters'
+      })
+    }else 
     props.onLogin(enteredEmail, password)
   }
 
   return (
+    <div>
+    {error && <ErrorModal title={error.title} message={error.message}/>}
     <div className="login" style={{ backgroundImage: `url(/assets/background.jpeg)` }}>
       <div className="login-container">
         <div className="login-image">
           <img src={"/assets/background.jpeg"} />
         </div>
-        <div className="login-name">
+        <div className= "login-name">
           <h3>Maua</h3>
         </div>
         <form onSubmit={submitHandler}>
@@ -76,6 +90,7 @@ function Login(props) {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 }

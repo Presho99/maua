@@ -108,6 +108,7 @@ const flowers = [
 ];
 
 function Home() {
+  // For the carousel and animations
   const [active, setActive] = useState(0);
   const [springs, springsAPI] = useSprings(
     10,
@@ -158,6 +159,28 @@ function Home() {
       }
     });
   }, [springsAPI, active]);
+  // For the cart
+  const [cartIsShown, setCartIsShown] = useState(false);
+
+  const showCartHandler = () => {
+    setCartIsShown(true)
+  }
+
+  const hideCartHandler = () => {
+    setCartIsShown(false)
+  }
+
+  // For the counter
+  const [count, setCount] = useState(1);
+  const increment = () => {
+    setCount((prevCount) => prevCount + 1);
+  };
+
+  const decrement = () => {
+    if (count > 1) {
+      setCount((prevCount) => prevCount - 1);
+    }
+  };
 
   return (
     <div className="home">
@@ -206,48 +229,51 @@ function Home() {
             <div className="item item3">
               <div className="flower-deets">
                 <div className="mini-carousel-container">
-                {springs.map(({ width, width2 }, i) => {
-                  return (
-                    <animated.div className="mini-carousel" style={{
-                      opacity: i === active ? 1 : 0
-                      }}>
-                      <animated.div className="mini-main" style={{
-                        backgroundImage: `url(${flowers[i].image})`, 
-                        // width: width.to(w => (`${w}px`)),
-                        marginRight: "10px",
-                        
-                        width: "200px"
-                        
-                        }}>
-                       
-                      </animated.div>
-                      <animated.div className="mini-main" style={{
-                        backgroundImage: `url(${flowers[(i+1)%10].image})`,
-                        // width: width2.to(w => (`${w}px`)),
-                        width: "90px",
-                        right: 0
-                  
-                        }}>
+                  {springs.map(({ width, width2 }, i) => {
+                    return (
+                      <animated.div
+                        className="mini-carousel"
+                        style={{
+                          opacity: i === active ? 1 : 0,
+                        }}
+                      >
+                        <animated.div
+                          className="mini-main"
+                          style={{
+                            backgroundImage: `url(${flowers[i].image})`,
+                            // width: width.to(w => (`${w}px`)),
+                            marginRight: "10px",
 
-                      
+                            width: "200px",
+                          }}
+                        ></animated.div>
+                        <animated.div
+                          className="mini-main"
+                          style={{
+                            backgroundImage: `url(${
+                              flowers[(i + 1) % 10].image
+                            })`,
+                            // width: width2.to(w => (`${w}px`)),
+                            width: "90px",
+                            right: 0,
+                          }}
+                        ></animated.div>
                       </animated.div>
-                    </animated.div>
-                  );
-                })}
+                    );
+                  })}
                 </div>
-               
 
                 <div className="quote">
                   <p>Symbols: {flowers[i].symbols}</p>
                 </div>
                 <div className="price">
                   <div className="number">
-                    <h3>${flowers[i].price}</h3>
+                    <h3>${flowers[i].price * count}</h3>
                   </div>
                   <div className="price-form">
-                    <button>-</button>
-                    <p>1</p>
-                    <button>+</button>
+                    <button onClick={decrement}>-</button>
+                    <p>{count}</p>
+                    <button onClick={increment}>+</button>
                   </div>
                 </div>
               </div>
