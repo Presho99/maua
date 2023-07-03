@@ -3,6 +3,7 @@ import "./Navigation.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faCoffee } from "@fortawesome/free-solid-svg-icons";
 
+
 function Navigation(props) {
   return (
     <nav>
@@ -24,9 +25,10 @@ function Navigation(props) {
           </li>
         )}
         {props.isLoggedIn && (
-          <li>
+          <li className="cart-icon">
             <a href="/">
               <FontAwesomeIcon icon={faCartShopping} className="nav-icon" />
+              <div className="cart-notification">1</div>
             </a>
           </li>
         )}

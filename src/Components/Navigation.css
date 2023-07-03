@@ -40,10 +40,30 @@ width: 50px;
 }
 
 .nav-icon{
-  font-size: 1.5rem;
+  font-size: 2rem;
   color: black;
 }
 
+.cart-icon{
+  position: relative;
+  cursor: pointer;
+  /* background-color: blue; */
+}
+
+.cart-notification{
+  width: 20px;
+  height: 20px;
+  background-color: brown;
+  color: white;
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: -11px;
+  right: -10px;
+
+}
 
 
 
