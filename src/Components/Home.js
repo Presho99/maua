@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import "./Home.css";
+import Cart from "./Cart";
 
 import FlowerItem from "./FlowerItem";
 import { useSprings, animated } from "@react-spring/web";
+
 
 const flowers = [
   {
@@ -107,7 +109,7 @@ const flowers = [
   },
 ];
 
-function Home() {
+function Home(props) {
   // For the carousel and animations
   const [active, setActive] = useState(0);
   const [springs, springsAPI] = useSprings(
@@ -162,13 +164,7 @@ function Home() {
   // For the cart
   const [cartIsShown, setCartIsShown] = useState(false);
 
-  const showCartHandler = () => {
-    setCartIsShown(true)
-  }
-
-  const hideCartHandler = () => {
-    setCartIsShown(false)
-  }
+  
 
   // For the counter
   const [count, setCount] = useState(1);
@@ -183,6 +179,8 @@ function Home() {
   };
 
   return (
+    <Fragment>
+      {props.cartIsShown && <Cart hideCartHandler={props.hideCartHandler}/>}
     <div className="home">
       <div className="controls">
         {springs.map(({ opacity, color }, i) => {
@@ -283,6 +281,7 @@ function Home() {
         );
       })}
     </div>
+    </Fragment>
   );
 }
 

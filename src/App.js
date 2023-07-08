@@ -14,12 +14,23 @@ function App() {
   const logoutHandler = () => {
     setIsLoggedIn(false)
   }
+
+   // For the cart
+   const [cartIsShown, setCartIsShown] = useState(true);
+
+   const showCartHandler = () => {
+     setCartIsShown(true)
+   }
+ 
+   const hideCartHandler = () => {
+     setCartIsShown(false)
+   }
   return (
     <div classname="app">
-     <MainHeader isAuthenticated={isLoggedIn} onLogout={logoutHandler}/>
+     <MainHeader isAuthenticated={isLoggedIn} onLogout={logoutHandler} showCartHandler={showCartHandler} />
      <main>
        {!isLoggedIn && <Login onLogin = {loginHandler}/>}
-       {isLoggedIn && <Home onLogout={logoutHandler}/>}
+       {isLoggedIn && <Home onLogout={logoutHandler} cartIsShown={cartIsShown} hideCartHandler={hideCartHandler}/>}
      </main>
     </div>
   );

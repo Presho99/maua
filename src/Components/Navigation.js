@@ -5,6 +5,9 @@ import { faCartShopping, faCoffee } from "@fortawesome/free-solid-svg-icons";
 
 
 function Navigation(props) {
+  const handleCart = () => {
+    props.showCartHandler()
+  }
   return (
     <nav>
       
@@ -26,10 +29,10 @@ function Navigation(props) {
         )}
         {props.isLoggedIn && (
           <li className="cart-icon">
-            <a href="/">
-              <FontAwesomeIcon icon={faCartShopping} className="nav-icon" />
+            <div>
+              <FontAwesomeIcon icon={faCartShopping} className="nav-icon" onClick={handleCart}/>
               <div className="cart-notification">1</div>
-            </a>
+            </div>
           </li>
         )}
         {props.isLoggedIn && (

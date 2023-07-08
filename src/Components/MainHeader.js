@@ -7,7 +7,7 @@ function MainHeader(props) {
   return (
     <div className='main-header'>
         <h1>Maua</h1>
-        <Navigation isLoggedIn={props.isAuthenticated} onLogout={props.onLogout}/>
+        <Navigation isLoggedIn={props.isAuthenticated} onLogout={props.onLogout} showCartHandler={props.showCartHandler}/>
         
     </div>
   )
