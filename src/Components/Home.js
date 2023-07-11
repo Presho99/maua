@@ -266,7 +266,7 @@ function Home(props) {
                 </div>
                 <div className="price">
                   <div className="number">
-                    <h3>${flowers[i].price * count}</h3>
+                    <h3>${(flowers[i].price * count).toFixed(2)}</h3>
                   </div>
                   <div className="price-form">
                     <button onClick={decrement}>-</button>
