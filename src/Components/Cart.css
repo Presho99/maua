@@ -51,6 +51,19 @@
   /* Additional styling for the other divs */
 }
 
+.continue{
+  display: flex;
+  cursor: pointer;
+}
+
+.continue p{
+  margin-left: 10px;
+}
+
+.continue-icon{
+
+}
+
 .checkout-side{
     background-color: #F6F6F6;
     padding: 20px 30px;
@@ -61,7 +74,7 @@
   height: 40px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid white;
+  border-bottom: 2px solid #eee;
 }
 
 .checkout-first{
@@ -102,9 +115,11 @@ form label{
 
 .promo-btn{
   margin-top: 20px;
+  cursor: pointer;
 }
 
 .promo-btn button{
+  cursor: pointer;
   outline: none;
   border: none;
 height: 30px;
@@ -113,13 +128,19 @@ width: 60px;
   border-radius: 3px;
   text-transform: uppercase;
   color: #fff;
+  transition: transform 0.5s ease;
+}
+
+.promo-btn button:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
 }
 
 .checkout-total{
   /* background-color: aqua; */
   display: flex;
   margin-top: 20px;
-  border-top: 1px solid white;
+  border-top: 2px solid #eee;
   justify-content: space-between;
   padding: 15px 0 10px;
   text-transform: uppercase;
@@ -135,4 +156,10 @@ width: 60px;
  height: 40px;
  color: #fff;
  background-color: #5E5DDC;
+ transition: transform 0.5s ease;
+}
+
+.checkout-btn:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
 }

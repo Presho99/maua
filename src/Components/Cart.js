@@ -1,3 +1,5 @@
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import "./Cart.css";
 
@@ -12,7 +14,7 @@ function Cart(props) {
     props.hideCartHandler();
   };
   return (
-    <div className="cart-backdrop" onClick={handleClick}>
+    <div className="cart-backdrop" >
       <div className="cart-modal">
         <div className="items-side">
           <div className="items-header">
@@ -34,7 +36,8 @@ function Cart(props) {
             </div>
           </div>
           <div className="continue">
-
+              <FontAwesomeIcon icon={faArrowLeft} className="continue-icon" onClick={handleClick}/>
+              <p>Continue Shopping</p>
           </div>
         </div>
         <div className="checkout-side">
