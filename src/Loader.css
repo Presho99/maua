@@ -1,0 +1,36 @@
+.image-container{
+    position: relative;
+    width: 100px;
+    height: 100px;  
+    background-color: blueviolet;
+}
+
+.loader-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.5s, transform 1s;
+  }
+
+  .rotate {
+    animation: rotateAnimation 3s linear infinite;
+  }
+  
+  @keyframes rotateAnimation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .fade-out {
+    opacity: 0;
+  }
+  
+  .fade-in {
+    opacity: 1;
+  }
