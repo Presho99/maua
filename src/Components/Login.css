@@ -1,41 +1,89 @@
-.login{
-    width: 100vw;
-    height: 100vh;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    overflow: hidden;
-   
+.login {
+  width: 100vw;
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  overflow: hidden;
+  background-color: #ed5167;
 }
 
-.login-container{
-    width: 350px;
-height: 500px;
-background-color: #ffffff;
-display: flex;
-flex-direction: column;
-padding: 20px;
-border-radius: 20px;
-align-items: center;
-box-shadow: 2px 1px 1px 1px rgba(0, 0, 0, 0.2);
-
-
+.login-container {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px 10px;
+  /* border-radius: 20px; */
+  align-items: center;
+  box-shadow: 2px 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-.login-image{
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    
+.login-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 20px;
 }
 
-img{
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
+img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.email input,
+.password input {
+  outline: none;
+  border: none;
+  height: 30px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding-left: 10px;
+  background-color: transparent;
+  border-bottom: 1px solid #ed5167;
+  color: #ed5167;
+}
+
+.password input:focus,
+.email input:focus {
+  background-color: #fff;
+}
+
+.login-links {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+
+.login-links a {
+  color: #ed5167;
+}
+
+.login-links a:hover{
+    color: pink;
+}
+
+.btn-login {
+  width: 100%;
+  outline: none;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #ed5167;
+  color: pink;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: 0.3s ease-in;
+}
+
+.btn-login:hover{
+   opacity: 0.8;
 }
