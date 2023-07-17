@@ -161,10 +161,20 @@ width: 300px;
     justify-content: center;
     align-items: center;
     border-radius: 5px;
+    
 }
 
-.price-form p{
+.input-form{
     margin: 0 10px; 
+    
+}
+
+.input-form input{
+    width: 30px;
+    outline: none;
+    border: none;
+    text-align: center;
+    background-color: aqua;
 }
 
 .item3-button{
@@ -175,6 +185,9 @@ width: 300px;
     outline: none;
     text-align: center;
     cursor: pointer;
+    background-color: #ED5167;
+    color: #F8C0CB;
+    border-radius: 10px;
 }
 
 .mini-main{

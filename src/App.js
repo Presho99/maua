@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext, useContext } from "react";
 import Home from "./Components/Home";
 import Loader from "./Loader";
 import Login from "./Components/Login";
 import MainHeader from "./Components/MainHeader";
-import CartProvider from "./store/CartProvider";
+
+const cartContext = createContext({
+  items: [],
+  setItems: () => {},
+});
+
+export const useCartContext = () => useContext(cartContext);
 
 function App() {
   const [loading, setLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [cartIsShown, setCartIsShown] = useState(false);
+  const [items, setItems] = useState([]);
 
   const loginHandler = (email, password) => {
     setIsLoggedIn(true);
@@ -24,7 +32,6 @@ function App() {
     }, 3000);
   }, []);
   // For the cart
-  const [cartIsShown, setCartIsShown] = useState(true);
 
   const showCartHandler = () => {
     setCartIsShown(true);
@@ -34,7 +41,7 @@ function App() {
     setCartIsShown(false);
   };
   return (
-    <CartProvider classname="app">
+    <cartContext.Provider classname="app" value={{ items, setItems }}>
       {loading ? (
         <Loader />
       ) : (
@@ -56,7 +63,7 @@ function App() {
           </main>
         </div>
       )}
-    </CartProvider>
+    </cartContext.Provider>
   );
 }
 

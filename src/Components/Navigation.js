@@ -4,13 +4,12 @@ import CartContext from "../store/cart-context";
 import "./Navigation.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faCoffee } from "@fortawesome/free-solid-svg-icons";
+import { useCartContext } from "../App";
 
 
 function Navigation(props) {
- const cartCtx = useContext(CartContext)
- const numberOfCartItems = cartCtx.items.reduce((curr, item) => {
-   return curr + item.amount
- }, 0)
+const {items} = useCartContext()
+ 
   const handleCart = () => {
     props.showCartHandler()
   }
@@ -37,7 +36,7 @@ function Navigation(props) {
           <li className="cart-icon">
             <div>
               <FontAwesomeIcon icon={faCartShopping} className="nav-icon" onClick={handleCart}/>
-              <div className="cart-notification">{numberOfCartItems}</div>
+              <div className="cart-notification">{items.length}</div>
             </div>
           </li>
         )}
