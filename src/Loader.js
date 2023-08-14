@@ -1,24 +1,21 @@
-import React, {useEffect, useState} from 'react'
-import './Loader.css'
+
+import React, { useEffect, useState } from "react";
+import "./Loader.css";
 
 function Loader() {
-    const [isRotated, setIsRotated] = useState(false)
-
-    useEffect(() => {
-        const rotateTimeout = setTimeout(() => {
-            setIsRotated(true)
-            setTimeout(() => setIsRotated(false), 1000)
-        }, 0)
-        return () => clearTimeout(rotateTimeout)
-    }, []) 
   return (
-    <div className='loader'>
-        <div className={`image-container ${isRotated ? 'rotate' : ''}`}>
-        <img src='/assets/rosebud.jpg' alt="First Image" className={`loader-image ${isRotated ? 'fade-out' : ''}`} />
-      <img src='/assets/rosebloom.webp' alt="Second Image" className={`loader-image ${isRotated ? 'fade-in' : ''}`} /> 
+    <div className="loader">
+      <div
+        className="logo-container"
+        style={{ backgroundImage: `url(/logo.webp)` }}
+      >
+        {/* <img src="/assets/logo.webp"/> */}
+        <div className="logo-text">
+          <h1>Maua.</h1>
         </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default Loader
+export default Loader;
