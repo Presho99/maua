@@ -20,7 +20,7 @@ const {items} = useCartContext()
           {props.isLoggedIn && (
             <div className="searchbar">
               <form className="ui form search-form">
-                <input type="text" placeholder="Search" />
+                <input type="text" placeholder="Search" style={{backgroundColor: "#ededed"}}/>
               </form>
             </div>
           )}
@@ -42,7 +42,7 @@ const {items} = useCartContext()
         )}
         {props.isLoggedIn && (
           <li>
-            <button onClick={props.onLogout}>Logout</button>
+            {/* <button onClick={props.onLogout}>Logout</button> */}
           </li>
         )}
         </div>
