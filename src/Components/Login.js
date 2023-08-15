@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./Login.css";
 import Button from "./Button";
 import ErrorModal from "./ErrorModal";
-import { logDOM } from "@testing-library/react";
 
 function Login(props) {
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -51,15 +50,11 @@ function Login(props) {
   return (
     <div>
       {error && <ErrorModal title={error.title} message={error.message} />}
-      <div className="login" style={{backgroundImage: `url('/logo.webp')`}}>
-        <div className="login-container" >
+      <div className="login" style={{ backgroundImage: `url('/logo.webp')` }}>
+        <div className="login-container">
           <div className="login-deets">
-            <div className="login-image">
-              <img src={"/assets/background.jpeg"} />
-            </div>
-            {/* <div className="login-name">
-            <h3>Maua</h3>
-          </div> */}
+            <h2>Welcome Back!</h2>
+           
             <form onSubmit={submitHandler}>
               <div className="email">
                 <input
@@ -92,6 +87,17 @@ function Login(props) {
                   Login
                 </Button>
               </div>
+
+              <div className="google-button">
+                <Button
+                  type="submit"
+                  className="btn-google"
+                  disabled={!validForm}
+                >
+                  <img src="/assets/google.png"/>
+                  <p>Sign in with google</p>
+                </Button>
+              </div>
               <div className="login-links">
                 <a href="#">Forgot Password</a>
                 <a href="#">Signup</a>
@@ -99,7 +105,9 @@ function Login(props) {
             </form>
           </div>
           <div className="login-right">
-            
+            <div className="right-image">
+              <img src="/logo.webp"/>
+            </div>
           </div>
         </div>
       </div>
