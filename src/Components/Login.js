@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import Button from "./Button";
 import ErrorModal from "./ErrorModal";
+import { logDOM } from "@testing-library/react";
 
 function Login(props) {
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -50,50 +51,56 @@ function Login(props) {
   return (
     <div>
       {error && <ErrorModal title={error.title} message={error.message} />}
-      <div
-        className="login"
-              >
-        <div className="login-container">
-          <div className="login-image">
-            <img src={"/assets/background.jpeg"} />
-          </div>
-          {/* <div className="login-name">
+      <div className="login" style={{backgroundImage: `url('/logo.webp')`}}>
+        <div className="login-container" >
+          <div className="login-deets">
+            <div className="login-image">
+              <img src={"/assets/background.jpeg"} />
+            </div>
+            {/* <div className="login-name">
             <h3>Maua</h3>
           </div> */}
-          <form onSubmit={submitHandler}>
-            <div className="email">
-              <input
-                type="email"
-                id="email"
-                placeholder="Email"
-                onChange={emailChangeHandler}
-                value={enteredEmail}
-                onBlur={validateEmailHandler}
-              />
-            </div>
+            <form onSubmit={submitHandler}>
+              <div className="email">
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Email"
+                  onChange={emailChangeHandler}
+                  value={enteredEmail}
+                  onBlur={validateEmailHandler}
+                />
+              </div>
 
-            <div className="password">
-              <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                onChange={passwordChangeHandler}
-                value={password}
-                onBlur={validatePasswordHandler}
-              />
-            </div>
-           
+              <div className="password">
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Password"
+                  onChange={passwordChangeHandler}
+                  value={password}
+                  onBlur={validatePasswordHandler}
+                />
+              </div>
 
-            <div className="login-button">
-              <Button type="submit" className="btn-login" disabled={!validForm}>
-                Login
-              </Button>
-            </div>
-            <div className="login-links">
-              <a href="#">Forgot Password</a>
-              <a href="#">Signup</a>
-            </div>
-          </form>
+              <div className="login-button">
+                <Button
+                  type="submit"
+                  className="btn-login"
+                  disabled={!validForm}
+                >
+                  Login
+                </Button>
+              </div>
+              <div className="login-links">
+                <a href="#">Forgot Password</a>
+                <a href="#">Signup</a>
+              </div>
+            </form>
+          </div>
+          <div className="login-right">
+            
+          </div>
         </div>
       </div>
     </div>
