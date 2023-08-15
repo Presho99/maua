@@ -40,12 +40,17 @@
 }
 
 .login-deets {
-  /* width: 500px; */
+  width: 250px;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   box-shadow: 2px 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.login-right{
+  width: 250px;
+  
 }
 
 .login-image {
