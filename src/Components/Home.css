@@ -1,207 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
-.home{
-    overflow: hidden;
-    background-color: #ededed;
-    
+.home{max-width:1400px;margin:auto;padding:45px 6% 70px}.shop-intro{padding:20px 0 45px}.shop-intro h1{font-size:clamp(2rem,4vw,3.4rem);font-weight:500;letter-spacing:-1.8px;margin:16px 0;overflow-wrap:anywhere}.shop-intro>p:last-child{color:#717a69;line-height:1.6}.collection-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:12px}.collection-heading h2{font-weight:500;font-size:1.35rem}.collection-heading span{font-size:.8rem;color:#737c6c}.bouquet-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}.bouquet-card{background:white;border:1px solid #e8eadd;border-radius:18px;overflow:hidden}.bouquet-card>img{width:100%;height:280px;object-fit:cover;display:block}.bouquet-card>div{padding:24px}.bouquet-card h2{font-weight:500;font-size:1.25rem}.bouquet-card p{font-size:.85rem;color:#727a6d;line-height:1.7;margin:12px 0 22px;min-height:90px}.bouquet-card footer{display:flex;justify-content:space-between;align-items:center;gap:10px}.bouquet-card footer button{border:0;border-radius:24px;background:#eaf0e3;color:#35462e;padding:12px 16px;font-size:.8rem}.bouquet-card footer span{margin-left:8px}@media(max-width:1000px){.bouquet-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.bouquet-grid{grid-template-columns:1fr}.home{padding:25px 5%}.shop-intro{padding-bottom:30px}.bouquet-card p{min-height:0}}
+
+/* The mobile collection follows the ivory, rose and teal reference palette. */
+.mobile-discovery{display:none}
+.bouquet-photo{display:block;position:relative;width:100%;padding:0;border:0;background:#e6ded7;overflow:hidden}
+.bouquet-photo img{width:100%;height:280px;object-fit:cover;display:block;transition:transform .25s ease}
+.bouquet-photo:hover img{transform:scale(1.03)}
+.photo-arrow{position:absolute;right:12px;top:12px;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:#fff9;color:#312b2c}
+.bouquet-details{border:0;padding:0;border-radius:26px;width:min(520px,94vw);max-height:90dvh;margin:auto;background:#c8adaa;color:#30292b;overflow:auto}
+.bouquet-details::backdrop{background:#30292b88;backdrop-filter:blur(5px)}
+.detail-photo{position:relative}.detail-photo>img{display:block;width:100%;height:350px;object-fit:cover}
+.detail-back{position:absolute;top:18px;left:18px;border:0;border-radius:50%;width:44px;height:44px;background:#f9f5edcf;color:#30292b;font-size:1.3rem}
+.detail-copy{padding:28px}.detail-copy .eyebrow{color:#514345;font-size:.65rem}.detail-copy h2{font-size:1.8rem;font-weight:500;letter-spacing:-.8px;margin:12px 0}.detail-copy>strong{font-size:1rem}.detail-copy>p:not(.eyebrow){font-size:.85rem;line-height:1.8;margin:18px 0}.detail-note{font-size:.75rem;border-top:1px solid #a88f8b;padding-top:16px;margin-bottom:24px}.detail-copy .primary{background:#30292b}
+@media(max-width:600px){
+  body{background:#f7f3e9;color:#30292b}
+  .home{padding:12px 6% 35px}
+  .shop-intro{padding:0 0 20px}.shop-intro .eyebrow{display:none}.shop-intro h1{font-size:1.65rem;letter-spacing:-.7px;margin:8px 0}.shop-intro>p:last-child{font-size:.8rem;color:#746962}
+  .mobile-discovery{display:block}
+  .collection-banner{display:flex;position:relative;isolation:isolate;overflow:hidden;min-height:170px;border-radius:20px;background:#315c54;color:#fff9f0;padding:22px}
+  .collection-banner>div{z-index:1;max-width:68%}.collection-banner p{font-size:.6rem;letter-spacing:1.4px;color:#e0e9dc}.collection-banner h2{font-size:1.65rem;font-weight:500;line-height:1.15;letter-spacing:-.7px;margin:12px 0 16px}.collection-banner button{border:0;border-radius:22px;background:#30292b;color:#fff9f0;min-height:40px;padding:10px 15px;font-size:.7rem}.collection-banner button span{margin-left:12px}
+  .collection-banner>img{position:absolute;right:0;top:0;width:45%;height:100%;object-fit:cover;z-index:-1;mask-image:linear-gradient(to right,transparent,#000 35%)}
+  .category-heading{display:flex;justify-content:space-between;align-items:center;margin:25px 0 15px}.category-heading h2{font-size:.95rem;font-weight:500}.category-heading button{border:0;background:none;color:#76605c;font-size:.75rem;min-height:44px;padding:0 6px}
+  .flower-categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:26px}.flower-categories button{background:none;border:0;font-size:.65rem;color:#5a4e4a;display:flex;align-items:center;flex-direction:column;gap:10px;line-height:1.4;padding:2px;min-height:95px}.flower-categories span{width:58px;height:58px;border-radius:50%;padding:3px;background:#e8dbd1;border:1px solid transparent}.flower-categories img{width:100%;height:100%;object-fit:cover;border-radius:50%}.flower-categories button[aria-pressed=true] span{border-color:#7e5555;background:#c8adaa}.flower-categories button[aria-pressed=true]{color:#493136;font-weight:600}
+  .collection-heading{scroll-margin-top:18px;margin-bottom:8px}.collection-heading h2{font-size:1rem}.collection-heading>span{font-size:.65rem;color:#7a6e65}
+  .bag-notice{font-size:.7rem;min-height:23px;color:#315c54}
+  .bouquet-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 14px}
+  .bouquet-card{border:0;background:transparent;border-radius:0;min-width:0;overflow:visible}.bouquet-photo{border-radius:18px;background:#c8adaa}.bouquet-photo img{height:190px}.photo-arrow{width:27px;height:27px;top:9px;right:9px;font-size:.85rem}
+  .bouquet-card>div{padding:11px 1px 0}.bouquet-card h2{font-size:.9rem;line-height:1.4;font-weight:500}.bouquet-card p{font-size:.68rem;line-height:1.6;color:#776a63;min-height:0;margin:6px 0 12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.bouquet-card footer{gap:5px;align-items:center;flex-wrap:wrap}.bouquet-card footer strong{font-size:.8rem;font-weight:500}.bouquet-card footer button{font-size:.63rem;padding:8px 10px;min-height:36px;background:#e9dad5;color:#493136}.bouquet-card footer span{margin-left:3px}
+  .bouquet-details{width:100%;max-width:none;max-height:100dvh;height:100dvh;border-radius:0}.detail-photo>img{height:52dvh}.detail-copy{padding:26px 7% calc(24px + env(safe-area-inset-bottom))}.detail-copy .primary{min-height:48px}
 }
+@media(max-width:360px){.bouquet-photo img{height:160px}.flower-categories{gap:5px}.flower-categories span{width:52px;height:52px}}
+@media(prefers-reduced-motion:reduce){.bouquet-photo img{transition:none}}
 
-.content{
-    
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-gap: 10px;
-    grid-template-areas: "left middle right";
-    font-family: 'Inter', sans-serif;
-    height: 100%;
-    position: absolute;
-    width: 100%;
-    background-color: #ededed;
-}
-
-.item1{
-    grid-area: left;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.one-desc{
-    margin: 20px 0;
-    line-height: 24px;
-}
-
-.one-family{
-    display: flex;
-    justify-content: space-between;
-}
-
-.item2{
-    grid-area: middle;
-    display: flex;
-    justify-content: center;
-
-}
-
-.flower{
-    height: 750px;
-}
-
-.flower img{
-    width: 100%;
-    border-radius: 0;
-    height: 750px;
-    object-fit: cover;
-}
-
-.carousel{
-    width: 80%;
-    position: relative;
-    background-color: aqua;
-    height: 80%;
-    margin: 20px 0 auto;
-   
-}
-
-.flowers-div{
-width: 100%;
-height: 100%;
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.flowers-div img{
-border-radius: 0;
-height: 100%;
-width: 100%;
-}
-
-.controls{
-    display: flex;
-    position: absolute;
-    bottom: 10vh;
-    left: 5vw;
-    z-index: 100;
-}
-
-.circle{
- width: 10px;
- height: 10px;
- border-radius: 50%;
- 
- margin-left: 3px;
- cursor: pointer;
- 
-}
-.item3{
-    grid-area: right;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 20px;
-    align-items: center;
-  
-}
-.flower-deets{
-
-}
-
-.mini-carousel-container{
-    position: relative;
-    height: 120px;
-    margin-bottom: 20px;
-    /* background-color: blueviolet; */
-width: 300px;
-}
-
-.mini-carousel{
-    width: 300px;
-    height: 120px;
-  position: absolute;
-    /* box-shadow: 0px 1px 6px -2px rgba(0,0,0,0.5); */
-/* background-color: aquamarine; */
-    display: flex;
-    overflow: hidden;
-
-   
-   
-}
-
-
-.price{
-    /* background-color: green; */
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-    justify-content: space-between;
-    margin: 20px 0;
-}
-
-.price .number{
-    font-size: 2rem;
-}
-
-.price-form{
-    display: flex;
-    justify-content: center;
-  
-    align-items: center;
-}
-
-.price-form button{
-    width: 30px;
-    height: 30px;
-    outline: none;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    font-size: 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    
-}
-
-.input-form{
-    margin: 0 10px; 
-    
-}
-
-.input-form input{
-    width: 30px;
-    outline: none;
-    border: none;
-    text-align: center;
-    background-color: aqua;
-}
-
-.item3-button{
-    width: 80%;
-    padding: 20px 20px;
-    box-shadow: 1px 1px 7px -1px rgba(0,0,0,0.2);
-    border: none;
-    outline: none;
-    text-align: center;
-    cursor: pointer;
-    background-color: #8F2410;
-    color: #ededed;
-    border-radius: 10px;
-}
-
-.mini-main{
- height: 120px;
-
-    position: absolute;
-    top: 0;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    transition: 3s ease-in;
-}
-
-
-
+.shop-discovery{display:block}.shop-discovery .collection-banner{display:flex;position:relative;isolation:isolate;overflow:hidden;min-height:270px;border-radius:24px;background:#315c54;color:#fff9f0;padding:38px 42px}.shop-discovery .collection-banner>div{z-index:1;max-width:65%}.shop-discovery .collection-banner p{font-size:.7rem;letter-spacing:2px;color:#e0e9dc}.shop-discovery .collection-banner h2{font-size:2.8rem;font-weight:500;line-height:1.15;letter-spacing:-1px;margin:18px 0 24px}.shop-discovery .collection-banner button{border:0;border-radius:24px;background:#30292b;color:#fff9f0;min-height:44px;padding:12px 20px;font-size:.85rem}.shop-discovery .collection-banner button:hover{background:#684d4e}.shop-discovery .collection-banner>img{position:absolute;right:0;top:0;width:46%;height:100%;object-fit:cover;z-index:-1;mask-image:linear-gradient(to right,transparent,#000 35%)}.category-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;margin:35px 0 20px}.category-heading h2{font-size:1.35rem;font-weight:500;margin-top:9px}.category-heading button{border:0;background:none;color:#755052;font-size:.85rem;min-height:44px;padding:0 12px}.flower-categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-bottom:20px}.flower-categories button{display:flex;align-items:center;flex-direction:column;gap:13px;padding:18px;background:#efe5dc;border:1px solid transparent;border-radius:20px;font-size:.9rem;color:#5a4e4a;transition:background-color .15s,border-color .15s}.flower-categories span{display:block;width:100px;height:100px;border-radius:50%;padding:4px;border:1px solid #d5c2b9;background:#e8dbd1}.flower-categories img{width:100%;height:100%;object-fit:cover;border-radius:50%}.flower-categories button:hover{background:#e6d3cb}.flower-categories button[aria-pressed=true]{border-color:#9b7574;background:#e9dad5;color:#493136}.collection-links{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px}.collection-links a{padding:12px 18px;border:1px solid #d8c5bc;border-radius:24px;text-decoration:none;font-size:.85rem;color:#624b48;background:#fffaf2}.collection-links a:hover{background:#e9dad5}.product-section{margin-bottom:50px;scroll-margin-top:24px}.store-collections{scroll-margin-top:24px}.product-section .collection-heading{margin-bottom:22px}.collection-heading>div>p{color:#796c63;font-size:.85rem;line-height:1.6;margin-top:8px}.bouquet-card h3{font-weight:500;font-size:1.25rem;margin:0}.bouquet-price{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap}.bouquet-price del{font-size:.75rem;color:#85716b}.product-badge{position:absolute;left:12px;top:14px;background:#fffaf2ed;color:#315c54;border-radius:20px;padding:7px 10px;font-size:.65rem;font-weight:600;pointer-events:none;max-width:calc(100% - 70px)}.product-badge.sale-badge{background:#a85260;color:#fff}.detail-copy>.bouquet-price{margin-top:8px}
+@media(min-width:1100px){.product-section .bouquet-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.product-section .bouquet-photo img{height:235px}.product-section .bouquet-card>div:not(.bouquet-image){padding:18px}.product-section .bouquet-card footer{flex-wrap:wrap;row-gap:12px}.product-section .bouquet-card p{min-height:115px}}
+@media(max-width:600px){.shop-discovery .collection-banner{min-height:170px;border-radius:20px;padding:22px}.shop-discovery .collection-banner p{font-size:.6rem;letter-spacing:1.4px}.shop-discovery .collection-banner h2{font-size:1.65rem;letter-spacing:-.7px;margin:12px 0 16px}.shop-discovery .collection-banner button{font-size:.7rem;padding:10px 15px}.category-heading{margin:25px 0 15px}.category-heading .eyebrow{font-size:.55rem;letter-spacing:1.4px}.category-heading h2{font-size:1rem}.flower-categories{gap:8px;margin-bottom:12px}.flower-categories button{padding:8px 2px;font-size:.65rem;gap:10px;border-radius:14px;min-height:100px}.flower-categories span{width:56px;height:56px;padding:3px}.collection-links{gap:7px;margin-bottom:26px;flex-wrap:nowrap}.collection-links a{flex:1;text-align:center;font-size:.65rem;white-space:nowrap;padding:11px 6px}.collection-links a span{display:none}.product-section{margin-bottom:32px}.product-section .collection-heading{margin-bottom:16px}.collection-heading>div>p{font-size:.72rem;max-width:220px}.bouquet-card h3{font-size:.9rem;line-height:1.4}.product-badge{left:8px;top:10px;padding:6px 8px;font-size:.55rem;max-width:calc(100% - 57px)}.bouquet-price{gap:5px}.bouquet-price del{font-size:.65rem}}
+@media(max-width:360px){.flower-categories span{width:48px;height:48px}.product-badge{font-size:.5rem;padding:6px}.collection-links a{font-size:.6rem}}

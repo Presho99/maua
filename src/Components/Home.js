@@ -1,328 +1,95 @@
-import React, { useEffect, useContext, useState, Fragment, useRef } from "react";
-import "./Home.css";
-import Cart from "./Cart";
-import Input from "./Input";
-import CartContext from "../store/cart-context";
+import React, { useEffect, useRef, useState } from 'react';
+import { flowers } from '../flowers';
+import { useCartContext } from '../App';
+import Cart from './Cart';
+import AddToBagButton from './AddToBagButton';
+import HeartButton from './HeartButton';
+import History from './History';
+import './Home.css';
 
-import FlowerItem from "./FlowerItem";
-import { useSprings, animated } from "@react-spring/web";
-import { useCartContext } from "../App";
-
-const flowers = [
-  {
-    id: "m1",
-    name: "Dahlia",
-    description: "Finest fish and veggies",
-    price: "22.99",
-    family: "Asteraceae",
-    origin: "Mexico",
-    symbols: "Devotion, love, beauty, dignity",
-    image: "/assets/dahliabouquet.jpeg",
-  },
-  {
-    id: "m2",
-    name: "Gerbera",
-    description: "A German specialty",
-    price: "16.5",
-    family: "Asteraceae",
-    origin: "Mexico",
-    symbols: "Innocence, loyal love, purity, cheerfulness",
-    image: "/assets/gerberabouquet.jpeg",
-  },
-  {
-    id: "m3",
-    name: "Hydrangea",
-    description: "American, raw, meaty",
-    price: "12.99",
-    family: "Asteraceae",
-    origin: "Mexico",
-    symbols: "Gratitude, beauty, grace",
-    image: "/assets/hydrangea.jpeg",
-  },
-  {
-    id: "m4",
-    name: "Peonies",
-    description: "Healthy...and green...",
-    price: "18.99",
-    family: "Asteraceae",
-    origin: "Mexico",
-    symbols: "Devotion, love, beauty, dignity",
-    image: "/assets/peonies.jpeg",
-  },
-  {
-    id: "m5",
-    name: "Rose",
-    description: "Healthy...and green...",
-    price: "18.99",
-    family: "Asteraceae",
-    origin: "Mexico",
-    symbols: "Devotion, love, beauty, dignity",
-    image: "/assets/rose.jpeg",
-  },
-  {
-    id: "m6",
-    name: "Sunflower",
-    description: "Healthy...and green...",
-    price: "18.99",
-    family: "Asteraceae",
-    origin: "Mexico",
-    symbols: "Devotion, love, beauty, dignity",
-    image: "/assets/Sunflower.jpeg",
-  },
-  {
-    id: "m7",
-    name: "Carnation",
-    description: "Healthy...and green...",
-    price: "18.99",
-    family: "Asteraceae",
-    origin: "Mexico",
-    image: "/assets/carnation.jpeg",
-    symbols: "Devotion, love, beauty, dignity",
-  },
-  {
-    id: "m8",
-    name: "Tulips",
-    description: "Healthy...and green...",
-    price: "18.99",
-    family: "Asteraceae",
-    origin: "Mexico",
-    symbols: "Devotion, love, beauty, dignity",
-    image: "/assets/Tulipas.jpeg",
-  },
-  {
-    id: "m9",
-    name: "Orchids",
-    description: "Finest fish and veggies",
-    price: "22.99",
-    family: "Asteraceae",
-    origin: "Mexico",
-    symbols: "Devotion, love, beauty, dignity",
-    image: "/assets/orchids.jpeg",
-  },
-  {
-    id: "m10",
-    name: "Lily",
-    description: "Finest fish and veggies",
-    price: "22.99",
-    family: "Asteraceae",
-    origin: "Mexico",
-    symbols: "Devotion, love, beauty, dignity",
-    image: "/assets/lilybouquet.jpeg",
-  },
+const categories = [
+  { name: 'All flowers', image: '/assets/peonies.jpeg', ids: null },
+  { name: 'Romantic', image: '/assets/rose.jpeg', ids: ['m4', 'm5', 'm8'] },
+  { name: 'Cheerful', image: '/assets/Sunflower.jpeg', ids: ['m1', 'm2', 'm6', 'm7'] },
+  { name: 'Elegant', image: '/assets/orchids.jpeg', ids: ['m3', 'm9', 'm10'] },
 ];
 
-function Home(props) {
-
-  const {setItems, items} = useCartContext()
-
-  const [count, setCount] = useState(1);
-  const [amountIsValid, setAmountIsValid] = useState(true)
-   // For the cart
-   const [cartIsShown, setCartIsShown] = useState(false);
-  // For the carousel and animations
-  const [active, setActive] = useState(0);
-  const [springs, springsAPI] = useSprings(
-    10,
-    (i) => ({
-      from: {
-        opacity: active === i ? 1 : 0,
-        color: active === i ? "#ED5079" : "pink",
-        width: active === i ? 200 : 0,
-        width2: active === i ? 90 : 0,
-      },
-      reset: true,
-    }),
-    [active]
-  );
-
+function BouquetDetails({ flower, onClose, onAdd }) {
+  const { wishlist, toggleWishlist } = useCartContext();
+  const dialog = useRef(null);
   useEffect(() => {
-    springsAPI.stop();
-    springsAPI.start((i) => {
-      if (i === active) {
-        return {
-          delay: 5000,
-          color: "pink",
-          opacity: 0,
-          config: {
-            duration: 600,
-          },
-        };
-      } else if (i % 10 === (active + 1) % 10) {
-        return {
-          delay: 5200,
-          color: "#ed5709",
-          opacity: 1,
-          config: {
-            duration: 400,
-          },
-          onRest: () => {
-            setActive((a) => (a + 1) % 10);
-          },
-        };
-      } else {
-        return {
-          opacity: 0,
-          color: "pink",
-          config: {
-            duration: 0,
-          },
-        };
-      }
-    });
-  }, [springsAPI, active, count]);
-
-  // To track product change and reset to 1 
-  useEffect(() => {
-    setCount(1)
-  }, [active])
- 
-
-  // For the counter
-  
-  const increment = () => {
-    setCount((prevCount) => prevCount + 1);
-  };
-
-  const decrement = () => {
-    if (count > 1) {
-      setCount((prevCount) => prevCount - 1);
-    }
-  };
-  // For adding item to cart
-  const addToCartHandler = (amount) => {
-   
-  }
-
-  // For the 'add to cart button'
-  const addToCartButtonHandler = () => {
-    const existing = items.find(item => item.flower.name === flowers[active].name)
-    if (existing){
-      const inexistent = items.filter(item => item.flower.name !== existing.flower.name)
-      existing.quantity += count
-      setItems([...inexistent, existing])
-    } else {
-setItems(() => [...items, {flower: flowers[active], quantity: count}])
-    }
-    setCount(1)
-  }
-  
-
-  // For the form
-  
-
- 
-
-  
-
-
-  return (
-    <Fragment>
-      {props.cartIsShown && <Cart hideCartHandler={props.hideCartHandler} />}
-      <div className="home">
-        <div className="controls">
-          {springs.map(({ opacity, color }, i) => {
-            return (
-              <animated.div onClick={() => setActive(i)}>
-                <animated.div
-                  className="circle"
-                  style={{ background: color }}
-                ></animated.div>
-              </animated.div>
-            );
-          })}
-        </div>
-        {springs.map(({ opacity }, i) => {
-          return (
-            <animated.div style={{ opacity }} className="content">
-              <div className="item item1">
-                <div className="one-name">
-                  <h1>{flowers[i].name}</h1>
-                </div>
-                <div className="one-desc">
-                  <p>{flowers[i].description}</p>
-                </div>
-                <div className="one-family">
-                  <div>
-                    <h3>Origin</h3>
-                    <p>{flowers[i].origin}</p>
-                  </div>
-                  <div>
-                    <h3>Family</h3>
-                    <p>{flowers[i].family}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="item item2">
-                <div className="carousel">
-                  <animated.div className="flowers-div">
-                    <img src={flowers[i].image} />
-                  </animated.div>
-                </div>
-              </div>
-
-              {/* Add to Cart Div */}
-              <div className="item item3">
-                <div className="flower-deets">
-                  <div className="mini-carousel-container">
-                    {springs.map(({ width, width2 }, i) => {
-                      return (
-                        <animated.div
-                          className="mini-carousel"
-                          style={{
-                            opacity: i === active ? 1 : 0,
-                          }}
-                        >
-                          <animated.div
-                            className="mini-main"
-                            style={{
-                              backgroundImage: `url(${flowers[i].image})`,
-                              // width: width.to(w => (`${w}px`)),
-                              marginRight: "10px",
-
-                              width: "200px",
-                            }}
-                          ></animated.div>
-                          <animated.div
-                            className="mini-main"
-                            style={{
-                              backgroundImage: `url(${
-                                flowers[(i + 1) % 10].image
-                              })`,
-                              // width: width2.to(w => (`${w}px`)),
-                              width: "90px",
-                              right: 0,
-                            }}
-                          ></animated.div>
-                        </animated.div>
-                      );
-                    })}
-                  </div>
-
-                  <div className="quote">
-                    <p>Symbols: {flowers[i].symbols}</p>
-                  </div>
-                  <div className="price">
-                    <div className="number">
-                      <h3>${(flowers[i].price * count).toFixed(2)}</h3>
-                    </div>
-                    <form className="price-form" onSubmit={(e)=> e.preventDefault() }>
-                      <button onClick={decrement}>-</button>
-                      <div className="input-form" >
-                       <input type="number"  value={count} onChange={(e)=> setCount(+e.target.value)}/>
-                      </div>
-                      <button onClick={increment}>+</button>
-                    </form>
-                  </div>
-                </div>
-                <button className="item3-button" onClick={addToCartButtonHandler}>Add to Cart</button>
-                {!amountIsValid && <p>Please select a flower</p>}
-              </div>
-            </animated.div>
-          );
-        })}
-      </div>
-    </Fragment>
-  );
+    const previous = document.activeElement;
+    const modal = dialog.current;
+    modal.showModal();
+    return () => { modal.close(); previous?.focus(); };
+  }, []);
+  return <dialog ref={dialog} className="bouquet-details" aria-labelledby="bouquet-title" onCancel={onClose} onClick={e => { if (e.target === dialog.current) onClose(); }}>
+    <div className="detail-photo"><img src={flower.image} alt={`${flower.name} bouquet`} /><button className="detail-back" onClick={onClose} aria-label="Back to bouquets">←</button><HeartButton flower={flower} liked={wishlist.includes(flower.id)} onToggle={toggleWishlist} /></div>
+    <div className="detail-copy"><p className="eyebrow">THOUGHTFULLY GATHERED</p><h2 id="bouquet-title">{flower.name}</h2><BouquetPrice flower={flower} /><p>{flower.description}</p><div className="detail-note">A beautiful gesture, for someone you love.</div><AddToBagButton className="primary" onAdd={() => onAdd(flower)} /></div>
+  </dialog>;
 }
 
-export default Home;
+function BouquetPrice({ flower }) {
+  return <span className="bouquet-price">
+    <strong>${Number(flower.price).toFixed(2)}</strong>
+    {flower.originalPrice && <><span className="sr-only">Original price </span><del>${Number(flower.originalPrice).toFixed(2)}</del></>}
+  </span>;
+}
+
+function BouquetCard({ flower, onSelect, onAdd }) {
+  const { wishlist, toggleWishlist } = useCartContext();
+  const badge = flower.originalPrice ? 'On sale' : flower.newArrival ? 'New arrival' : flower.bestSeller ? 'Best seller' : null;
+  return <article className="bouquet-card">
+    <div className="bouquet-image">
+      <button className="bouquet-photo" aria-label={`View ${flower.name} bouquet`} onClick={() => onSelect(flower)}><img src={flower.image} alt={`${flower.name} bouquet`} loading="lazy" /></button>
+      {badge && <span className={`product-badge ${flower.originalPrice ? 'sale-badge' : ''}`}>{badge}</span>}
+      <HeartButton flower={flower} liked={wishlist.includes(flower.id)} onToggle={toggleWishlist} />
+    </div>
+    <div><h3>{flower.name}</h3><p>{flower.description}</p><footer><BouquetPrice flower={flower} /><AddToBagButton onAdd={() => onAdd(flower)} /></footer></div>
+  </article>;
+}
+
+const collections = [
+  { id: 'best-sellers', title: 'Best sellers', description: 'Our signature picks for a beautiful gesture.', includes: flower => flower.bestSeller },
+  { id: 'on-sale', title: 'On sale', description: 'A little more beauty for a little less.', includes: flower => flower.originalPrice },
+  { id: 'new-arrivals', title: 'New arrivals', description: 'Fresh additions to fall in love with.', includes: flower => flower.newArrival },
+];
+
+export default function Home({ user, search, view, onViewChange, cartIsShown, hideCartHandler }) {
+  const { setItems, wishlist, history } = useCartContext();
+  const [notice, setNotice] = useState('');
+  const [category, setCategory] = useState(categories[0]);
+  const [selected, setSelected] = useState(null);
+  const collection = useRef(null);
+  const results = flowers.filter(f => (view !== 'wishlist' || wishlist.includes(f.id)) && (view === 'wishlist' || !category.ids || category.ids.includes(f.id)) && `${f.name} ${f.description} ${f.symbols}`.toLowerCase().includes(search.trim().toLowerCase()));
+  const showCollections = view === 'shop' && !search.trim() && !category.ids;
+  function add(flower) {
+    setItems(items => items.some(i => i.flower.id === flower.id) ? items.map(i => i.flower.id === flower.id ? { ...i, quantity: Math.min(99, i.quantity + 1) } : i) : [...items, { flower, quantity: 1 }]);
+    setNotice(`${flower.name} added to your bag.`);
+  }
+  return <main className="home">
+    {cartIsShown && <Cart hideCartHandler={hideCartHandler} />}
+    {selected && <BouquetDetails flower={selected} onClose={() => setSelected(null)} onAdd={add} />}
+    <section className="shop-intro"><p className="eyebrow">FRESH FLOWERS, THOUGHTFULLY CHOSEN</p><h1>Hi, {user.name}</h1><p>Find a bouquet that says it beautifully.</p></section>
+    {view === 'shop' && <section className="shop-discovery" aria-label="Discover our flowers">
+      <div className="collection-banner"><div><p>NEW COLLECTION</p><h2>Little blooms.<br />Big feelings.</h2><button onClick={() => { setCategory(categories[0]); collection.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}>Shop bouquets <span aria-hidden="true">↗</span></button></div><img src="/assets/hydrangea.jpeg" alt="Soft hydrangea blooms" /></div>
+      <div className="category-heading"><div><p className="eyebrow">FIND YOUR PERFECT GESTURE</p><h2>Shop by category</h2></div><button onClick={() => setCategory(categories[0])}>See all</button></div>
+      <div className="flower-categories">{categories.map(c => <button key={c.name} aria-pressed={category.name === c.name} onClick={() => setCategory(c)}><span><img src={c.image} alt="" /></span>{c.name}</button>)}</div>
+    </section>}
+    {view === 'history' ? <History orders={history} search={search} onShop={() => onViewChange('shop')} /> : <>
+    <div ref={collection} className="store-collections">
+      <p className="bag-notice" role="status">{notice}</p>
+      {showCollections ? <>
+        <nav className="collection-links" aria-label="Bouquet collections">{collections.map(group => <a href={`#${group.id}`} key={group.id}>{group.title}<span aria-hidden="true"> ↗</span></a>)}</nav>
+        {collections.map(group => <section className="product-section" id={group.id} key={group.id} aria-labelledby={`${group.id}-title`}>
+          <div className="collection-heading"><div><h2 id={`${group.id}-title`}>{group.title}</h2><p>{group.description}</p></div><span>{flowers.filter(group.includes).length} bouquets</span></div>
+          <div className="bouquet-grid">{flowers.filter(group.includes).map(flower => <BouquetCard key={flower.id} flower={flower} onSelect={setSelected} onAdd={add} />)}</div>
+        </section>)}
+      </> : <>
+        <div className="collection-heading"><h2>{view === 'wishlist' ? 'Your wishlist' : search.trim() ? 'Search results' : category.name + ' bouquets'}</h2><span>{results.length} bouquets</span></div>
+        {results.length ? <div className="bouquet-grid">{results.map(flower => <BouquetCard key={flower.id} flower={flower} onSelect={setSelected} onAdd={add} />)}</div> : <div className="empty-state"><h2>{view === 'wishlist' && !search.trim() ? 'Your wishlist is waiting to bloom' : 'No bouquets found'}</h2><p>{view === 'wishlist' && !search.trim() ? 'Tap the heart on a bouquet to save it here.' : 'Try another category or a flower name such as rose, lily or tulips.'}</p></div>}
+      </>}
+    </div></>}
+
+  </main>;
+}

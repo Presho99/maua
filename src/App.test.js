@@ -1,0 +1,158 @@
+import React from 'react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import App from './App';
+import { authenticate } from './lib/auth';
+jest.mock('./lib/auth', () => ({
+  readSession: () => JSON.parse(global.localStorage.getItem('maua.session.v1')),
+  clearSession: () => global.localStorage.removeItem('maua.session.v1'),
+  authenticate: jest.fn(),
+}));
+beforeEach(() => { localStorage.clear(); jest.clearAllMocks(); });
+test('signup validates inputs and passes the account to the dashboard', async () => {
+  authenticate.mockResolvedValue({ name: 'Amina', email: 'amina@example.com' });
+  render(<App />);
+  fireEvent.click(screen.getByText('Sign up'));
+  fireEvent.click(screen.getByRole('button', { name: 'Create account' }));
+  expect(screen.getByRole('alert')).toHaveTextContent('Enter a name');
+  fireEvent.change(screen.getByLabelText('Your name'), { target: { value: 'Amina' } });
+  fireEvent.change(screen.getByLabelText('Email address'), { target: { value: 'amina@example.com' } });
+  fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'flowers123' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Create account' }));
+  expect(await screen.findByText('Hi, Amina')).toBeInTheDocument();
+  expect(authenticate).toHaveBeenCalledWith({ name: 'Amina', email: 'amina@example.com', password: 'flowers123' }, true);
+});
+test('restores a profile, filters search, and logs out through the profile menu', () => {
+  localStorage.setItem('maua.session.v1', JSON.stringify({ name: 'Amina', email: 'amina@example.com' }));
+  render(<App />);
+  expect(screen.getByText('Hi, Amina')).toBeInTheDocument();
+  fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'rose' } });
+  expect(screen.getAllByRole('article')).toHaveLength(1);
+  fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'xyz123' } });
+  expect(screen.getByText('No bouquets found')).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Profile menu' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Log out' }));
+  expect(screen.getByText('Welcome back!')).toBeInTheDocument();
+  expect(localStorage.getItem('maua.session.v1')).toBeNull();
+});
+test('checkout calculates quantity and delivery and rejects invalid quantities', () => {
+  HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', ''); };
+  HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); };
+  localStorage.setItem('maua.session.v1', JSON.stringify({ name: 'Amina', email: 'amina@example.com' }));
+  render(<App />);
+  fireEvent.click(screen.getAllByRole('button', { name: /Add to bag/ })[0]);
+  fireEvent.click(screen.getByRole('button', { name: 'Cart (1 items)' }));
+  expect(screen.getByText('$27.98')).toBeInTheDocument();
+  fireEvent.change(screen.getByLabelText('Dahlia quantity'), { target: { value: '-1' } });
+  expect(screen.getByRole('alert')).toHaveTextContent('whole number');
+  fireEvent.change(screen.getByLabelText('Dahlia quantity'), { target: { value: '2' } });
+  fireEvent.change(screen.getByLabelText('Delivery'), { target: { value: 'express' } });
+  expect(screen.getByText('$55.97')).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Remove' }));
+  expect(screen.getByRole('button', { name: 'Complete demo checkout' })).toBeDisabled();
+});
+test('filters by feeling and opens a bouquet detail view with a working add button', () => {
+  HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', ''); };
+  HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); };
+  localStorage.setItem('maua.session.v1', JSON.stringify({ name: 'Amina', email: 'amina@example.com' }));
+  render(<App />);
+  fireEvent.click(screen.getByText('Romantic'));
+  expect(screen.getAllByRole('article')).toHaveLength(3);
+  fireEvent.click(screen.getByRole('button', { name: 'View Rose bouquet' }));
+  expect(screen.getByRole('dialog')).toHaveAccessibleName('Rose');
+  fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Add to bag', exact: true }));
+  expect(within(screen.getByRole('dialog')).getByRole('button', { name: 'Added ✓' })).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Back to bouquets' }));
+  expect(screen.getByRole('button', { name: 'Cart (1 items)' })).toBeInTheDocument();
+  fireEvent.click(screen.getByText('See all'));
+  expect(screen.getAllByRole('article')).toHaveLength(10);
+});
+test('offers signup for an account missing from this browser and keeps the email', async () => {
+  authenticate.mockRejectedValue(Object.assign(new Error('No account with this email is saved in this browser.'), { code: 'ACCOUNT_NOT_FOUND' }));
+  render(<App />);
+  fireEvent.change(screen.getByLabelText('Email address'), { target: { value: 'new@example.com' } });
+  fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'flowers123' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Log in' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Create an account with this email' }));
+  expect(screen.getByLabelText('Your name')).toBeInTheDocument();
+  expect(screen.getByLabelText('Email address')).toHaveValue('new@example.com');
+  expect(screen.getByLabelText('Password')).toHaveValue('');
+});
+test('hearts save a wishlist across reloads and can remove a saved bouquet', () => {
+  localStorage.setItem('maua.session.v1', JSON.stringify({ name: 'Amina', email: 'amina@example.com' }));
+  const app = render(<App />);
+  fireEvent.click(screen.getByRole('button', { name: 'Save Dahlia to wishlist' }));
+  expect(screen.getByRole('button', { name: 'Remove Dahlia from wishlist' })).toHaveAttribute('aria-pressed', 'true');
+  fireEvent.click(screen.getByRole('button', { name: 'Wishlist', exact: true }));
+  expect(screen.getAllByRole('article')).toHaveLength(1);
+  app.unmount();
+  render(<App />);
+  fireEvent.click(screen.getByRole('button', { name: 'Wishlist', exact: true }));
+  expect(screen.getAllByRole('article')).toHaveLength(1);
+  fireEvent.click(screen.getByRole('button', { name: 'Remove Dahlia from wishlist' }));
+  expect(screen.getByText('Your wishlist is waiting to bloom')).toBeInTheDocument();
+});
+test('add feedback updates cart count, and checkout saves history across reloads', () => {
+  HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', ''); };
+  HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); };
+  Object.defineProperty(global, 'crypto', { configurable: true, value: { randomUUID: () => 'order-test-id' } });
+  localStorage.setItem('maua.session.v1', JSON.stringify({ name: 'Amina', email: 'amina@example.com' }));
+  const app = render(<App />);
+  const card = within(screen.getAllByRole('article')[0]);
+  fireEvent.click(card.getByRole('button', { name: 'Add to bag' }));
+  expect(card.getByRole('button', { name: 'Added ✓' })).toHaveClass('is-added');
+  fireEvent.click(card.getByRole('button', { name: 'Added ✓' }));
+  expect(screen.getByRole('button', { name: 'Cart (2 items)' })).toHaveTextContent('2');
+  fireEvent.click(screen.getByRole('button', { name: 'Cart (2 items)' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Complete demo checkout' }));
+  expect(screen.getByRole('button', { name: 'Cart (0 items)' })).toHaveTextContent('0');
+  fireEvent.click(screen.getByRole('button', { name: 'Close shopping bag' }));
+  fireEvent.click(screen.getByRole('button', { name: 'History' }));
+  expect(screen.getByText('Dahlia × 2')).toBeInTheDocument();
+  expect(screen.getByText('Total $50.97')).toBeInTheDocument();
+  app.unmount();
+  render(<App />);
+  fireEvent.click(screen.getByRole('button', { name: 'History' }));
+  expect(screen.getByText('Dahlia × 2')).toBeInTheDocument();
+});
+test('wishlist and history are private to each local account', () => {
+  localStorage.setItem('maua.wishlist.v1:other@example.com', JSON.stringify(['m1']));
+  localStorage.setItem('maua.session.v1', JSON.stringify({ name: 'Amina', email: 'amina@example.com' }));
+  render(<App />);
+  fireEvent.click(screen.getByRole('button', { name: 'Wishlist', exact: true }));
+  expect(screen.getByText('Your wishlist is waiting to bloom')).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'History' }));
+  expect(screen.getByText('No orders yet')).toBeInTheDocument();
+});
+test('storefront shows categories and three distinct shoppable collections', () => {
+  localStorage.setItem('maua.session.v1', JSON.stringify({ name: 'Amina', email: 'amina@example.com' }));
+  render(<App />);
+  expect(screen.getByRole('heading', { name: 'Shop by category' })).toBeInTheDocument();
+  const best = screen.getByRole('region', { name: 'Best sellers' });
+  const sale = screen.getByRole('region', { name: 'On sale' });
+  const arrivals = screen.getByRole('region', { name: 'New arrivals' });
+  expect(within(best).getAllByRole('article')).toHaveLength(4);
+  expect(within(sale).getAllByRole('article')).toHaveLength(3);
+  expect(within(arrivals).getAllByRole('article')).toHaveLength(3);
+  expect(within(sale).getByText('$20.00').tagName).toBe('DEL');
+  expect(screen.getByRole('link', { name: 'New arrivals' })).toHaveAttribute('href', '#new-arrivals');
+  fireEvent.click(screen.getByRole('button', { name: 'Elegant' }));
+  expect(screen.getAllByRole('article')).toHaveLength(3);
+  expect(screen.queryByRole('region', { name: 'Best sellers' })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'See all' }));
+  expect(screen.getByRole('region', { name: 'Best sellers' })).toBeInTheDocument();
+});
+test('sale bouquet uses its displayed discounted price in checkout', () => {
+  HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', ''); };
+  HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); };
+  localStorage.setItem('maua.session.v1', JSON.stringify({ name: 'Amina', email: 'amina@example.com' }));
+  render(<App />);
+  const sale = within(screen.getByRole('region', { name: 'On sale' }));
+  const gerbera = within(sale.getAllByRole('article')[0]);
+  expect(gerbera.getByText('$16.50')).toBeInTheDocument();
+  fireEvent.click(gerbera.getByRole('button', { name: 'Add to bag' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Cart (1 items)' }));
+  const cart = within(screen.getByRole('dialog'));
+  expect(cart.getByText('$16.50 each')).toBeInTheDocument();
+  expect(cart.getByText('$21.49')).toBeInTheDocument();
+});
