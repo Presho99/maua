@@ -1,9 +1,1 @@
-Make the checkout look more modern
-Introduce a working sign up and login page like shown in login.jpeg
-change font style to Inter
-The name used to login should show on the dashboard as Hi, 'name'
-Make sure the search bar works
-Ensure you cater for invalid inputs
-Ensure the profile is clickable and when clicked it should show  a menu having a logout option
-Have better descriptions for the bouquets
-Enable internal storage so profile is always remembered
+Fix the appearance of the error messages especially on the login page. Put it on a modal that is exitable easily using an x button or when anyone clicks anywhere apart from the card containing the error message in the modal. eNSURE THE LOGIN AND SIGNUP FORM FITS INSIDE THE SCREEN  EVEN IN SMALL DEVICES AND DOESNT APPEAR TO BE LEAVING
