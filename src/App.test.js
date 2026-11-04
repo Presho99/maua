@@ -8,19 +8,49 @@ jest.mock('./lib/auth', () => ({
   clearSession: () => global.localStorage.removeItem('maua.session.v1'),
   authenticate: jest.fn(),
 }));
-beforeEach(() => { localStorage.clear(); jest.clearAllMocks(); });
+beforeEach(() => {
+  localStorage.clear(); jest.clearAllMocks();
+  HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', ''); };
+  HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); };
+});
 test('signup validates inputs and passes the account to the dashboard', async () => {
   authenticate.mockResolvedValue({ name: 'Amina', email: 'amina@example.com' });
   render(<App />);
   fireEvent.click(screen.getByText('Sign up'));
   fireEvent.click(screen.getByRole('button', { name: 'Create account' }));
   expect(screen.getByRole('alert')).toHaveTextContent('Enter a name');
+  fireEvent.click(screen.getByRole('button', { name: 'Close error message' }));
   fireEvent.change(screen.getByLabelText('Your name'), { target: { value: 'Amina' } });
   fireEvent.change(screen.getByLabelText('Email address'), { target: { value: 'amina@example.com' } });
   fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'flowers123' } });
   fireEvent.click(screen.getByRole('button', { name: 'Create account' }));
   expect(await screen.findByText('Hi, Amina')).toBeInTheDocument();
   expect(authenticate).toHaveBeenCalledWith({ name: 'Amina', email: 'amina@example.com', password: 'flowers123' }, true);
+});
+test('login errors close with the close button, outside click, or Escape and preserve inputs', () => {
+  render(<App />);
+  const email = screen.getByLabelText('Email address');
+  fireEvent.change(email, { target: { value: 'invalid-email' } });
+  const submit = screen.getByRole('button', { name: 'Log in' });
+  submit.focus();
+  fireEvent.click(submit);
+  let modal = screen.getByRole('dialog', { name: 'Please check your details' });
+  expect(modal).toHaveAttribute('aria-describedby', 'error-message');
+  expect(document.body.style.overflow).toBe('hidden');
+  fireEvent.click(screen.getByRole('alert'));
+  expect(modal).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Close error message' }));
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  expect(submit).toHaveFocus();
+  expect(document.body.style.overflow).toBe('');
+  fireEvent.click(submit);
+  fireEvent.click(screen.getByRole('dialog'));
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  fireEvent.click(submit);
+  modal = screen.getByRole('dialog');
+  fireEvent(modal, new Event('cancel', { bubbles: false, cancelable: true }));
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  expect(email).toHaveValue('invalid-email');
 });
 test('restores a profile, filters search, and logs out through the profile menu', () => {
   localStorage.setItem('maua.session.v1', JSON.stringify({ name: 'Amina', email: 'amina@example.com' }));

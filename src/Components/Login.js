@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { authenticate } from '../lib/auth';
+import ErrorModal from './ErrorModal';
 import './Login.css';
 export default function Login({ onLogin }) {
   const [signup, setSignup] = useState(false);
@@ -29,9 +30,9 @@ export default function Login({ onLogin }) {
       <label>Email address<input type="email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} required /></label>
       <label>Password<div className="password-field"><input type={visible ? 'text' : 'password'} autoComplete={signup ? 'new-password' : 'current-password'} value={password} onChange={e => setPassword(e.target.value)} required minLength={8} /><button type="button" aria-label={visible ? 'Hide password' : 'Show password'} onClick={() => setVisible(!visible)}>{visible ? 'Hide' : 'Show'}</button></div></label>
       <small>{signup ? 'Use at least 8 characters.' : 'Your profile is remembered on this browser.'}</small>
-      {error && <p className="error" role="alert">{error}</p>}
-      {accountMissing && <button type="button" className="text-button" onClick={() => { setSignup(true); setAccountMissing(false); setError(''); setPassword(''); }}>Create an account with this email</button>}
       <button className="primary" disabled={busy}>{busy ? 'Please wait…' : signup ? 'Create account' : 'Log in'}</button>
     </form><p className="auth-switch">{signup ? 'Already have an account?' : 'New to Maua?'} <button type="button" onClick={() => { setSignup(!signup); setError(''); setAccountMissing(false); setPassword(''); }}>{signup ? 'Log in' : 'Sign up'}</button></p><small className="local-note">Accounts are saved only in this browser at this app address.</small></section>
-  </div></main>;
+  </div>{error && <ErrorModal message={error} onClose={() => setError('')}>
+    {accountMissing && <button type="button" className="text-button" onClick={() => { setSignup(true); setAccountMissing(false); setError(''); setPassword(''); }}>Create an account with this email</button>}
+  </ErrorModal>}</main>;
 }

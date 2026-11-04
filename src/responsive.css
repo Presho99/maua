@@ -31,6 +31,8 @@ input, select, button { min-width: 0; }
 .flower-categories button { min-width: 0; }
 .flower-categories span { max-width: 100%; aspect-ratio: 1; }
 .auth-page { min-height: 100dvh; }
+.auth-card, .auth-form, .auth-form form { min-width: 0; max-width: 100%; }
+.auth-form h1, .auth-form > p, .local-note { overflow-wrap: anywhere; }
 .auth-form { padding-inline: clamp(24px, 5vw, 80px); }
 .auth-form input, .order-summary select, .cart-row input { font-size: 16px; }
 .password-field button { min-height: 44px; top: 10px; }
@@ -97,4 +99,26 @@ input, select, button { min-width: 0; }
 @media (max-height: 500px) and (min-width: 601px) {
   .cart-modal, .bouquet-details { max-height: 96dvh; }
   .detail-photo > img { height: 180px; }
+}
+
+/* Keep the form in view on short phones; allow scrolling when text is enlarged. */
+@media (max-width: 750px) and (max-height: 800px) {
+  .auth-page { padding: 0; align-items: center; }
+  .auth-card { min-height: 100dvh; border-radius: 0; padding: 0; max-width: none; }
+  .auth-art { display: none; }
+  .auth-form { padding: max(16px, env(safe-area-inset-top)) max(20px, 7%) max(16px, env(safe-area-inset-bottom)); }
+  .auth-form .brand { margin-bottom: 16px; }
+  .auth-form h1 { font-size: 1.65rem; }
+  .auth-form > p { margin: 10px 0 18px; }
+  .auth-form label { margin-bottom: 14px; }
+  .auth-form form > small { margin-bottom: 16px; }
+  .auth-form .auth-switch { margin: 10px 0; }
+}
+
+@media (min-width: 751px) and (max-height: 800px) {
+  .auth-page { padding-block: 20px; }
+  .auth-card { min-height: 0; }
+  .auth-art { min-height: 0; }
+  .auth-form { padding-block: 16px; }
+  .auth-form .brand { margin-bottom: 20px; }
 }
