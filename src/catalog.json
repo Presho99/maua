@@ -1,0 +1,112 @@
+[
+  {
+    "id": "m1",
+    "bestSeller": true,
+    "name": "Dahlia",
+    "description": "Sculptural layers of dahlia petals, gathered into a generous bouquet for heartfelt celebrations.",
+    "price": "22.99",
+    "family": "Asteraceae",
+    "origin": "Mexico",
+    "symbols": "Devotion, love, beauty, dignity",
+    "image": "/assets/dahliabouquet.jpeg"
+  },
+  {
+    "id": "m2",
+    "originalPrice": "20.00",
+    "name": "Gerbera",
+    "description": "Bright, open-faced gerberas bring a cheerful splash of colour to birthdays and everyday surprises.",
+    "price": "16.5",
+    "family": "Asteraceae",
+    "origin": "Mexico",
+    "symbols": "Innocence, loyal love, purity, cheerfulness",
+    "image": "/assets/gerberabouquet.jpeg"
+  },
+  {
+    "id": "m3",
+    "originalPrice": "16.99",
+    "name": "Hydrangea",
+    "description": "Cloud-like clusters of hydrangeas create a soft, full bouquet for a thoughtful thank-you.",
+    "price": "12.99",
+    "family": "Asteraceae",
+    "origin": "Mexico",
+    "symbols": "Gratitude, beauty, grace",
+    "image": "/assets/hydrangea.jpeg"
+  },
+  {
+    "id": "m4",
+    "bestSeller": true,
+    "name": "Peonies",
+    "description": "Romantic peonies with lush, ruffled petals make a graceful gift for someone special.",
+    "price": "18.99",
+    "family": "Asteraceae",
+    "origin": "Mexico",
+    "symbols": "Devotion, love, beauty, dignity",
+    "image": "/assets/peonies.jpeg"
+  },
+  {
+    "id": "m5",
+    "bestSeller": true,
+    "name": "Rose",
+    "description": "Classic roses arranged for a timeless expression of affection, romance and appreciation.",
+    "price": "18.99",
+    "family": "Asteraceae",
+    "origin": "Mexico",
+    "symbols": "Devotion, love, beauty, dignity",
+    "image": "/assets/rose.jpeg"
+  },
+  {
+    "id": "m6",
+    "bestSeller": true,
+    "name": "Sunflower",
+    "description": "Golden sunflowers bring warmth and optimism to a room, perfect for celebrating a fresh start.",
+    "price": "18.99",
+    "family": "Asteraceae",
+    "origin": "Mexico",
+    "symbols": "Devotion, love, beauty, dignity",
+    "image": "/assets/Sunflower.jpeg"
+  },
+  {
+    "id": "m7",
+    "originalPrice": "23.99",
+    "name": "Carnation",
+    "description": "Delicately fringed carnations offer lasting colour and an elegant way to say you care.",
+    "price": "18.99",
+    "family": "Asteraceae",
+    "origin": "Mexico",
+    "image": "/assets/carnation.jpeg",
+    "symbols": "Devotion, love, beauty, dignity"
+  },
+  {
+    "id": "m8",
+    "newArrival": true,
+    "name": "Tulips",
+    "description": "Simple, graceful tulips bring a fresh seasonal feel to any table or celebration.",
+    "price": "18.99",
+    "family": "Asteraceae",
+    "origin": "Mexico",
+    "symbols": "Devotion, love, beauty, dignity",
+    "image": "/assets/Tulipas.jpeg"
+  },
+  {
+    "id": "m9",
+    "newArrival": true,
+    "name": "Orchids",
+    "description": "Elegant orchid blooms make a striking, refined gift for meaningful milestones.",
+    "price": "22.99",
+    "family": "Asteraceae",
+    "origin": "Mexico",
+    "symbols": "Devotion, love, beauty, dignity",
+    "image": "/assets/orchids.jpeg"
+  },
+  {
+    "id": "m10",
+    "newArrival": true,
+    "name": "Lily",
+    "description": "Graceful lilies with sweeping petals create a beautiful centrepiece for special occasions.",
+    "price": "22.99",
+    "family": "Asteraceae",
+    "origin": "Mexico",
+    "symbols": "Devotion, love, beauty, dignity",
+    "image": "/assets/lilybouquet.jpeg"
+  }
+]

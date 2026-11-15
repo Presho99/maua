@@ -13,12 +13,13 @@ export default function History({ orders, search, onShop }) {
     </div>}
     {orders.length > 0 && !results.length && <p className="empty-state">No matching orders found.</p>}
     {results.map(order => <article className="history-card" key={order.id}>
-      <header><h3>Demo checkout</h3><time dateTime={order.date}>{new Date(order.date).toLocaleString()}</time></header>
+      <header><h3>{order.status?.replaceAll('_', ' ')}</h3><time dateTime={order.date}>{new Date(order.date).toLocaleString()}</time></header>
+      {order.payment && <p>Simulated M-Pesa receipt: {order.payment.receipt}</p>}
       {order.items.map(item => <div className="history-item" key={item.flower.id}>
         <img src={item.flower.image} alt="" /><span>{item.flower.name} × {item.quantity}</span>
-        <strong>${(Number(item.flower.price) * item.quantity).toFixed(2)}</strong>
+        <strong>KES {(Number(item.flower.price) * item.quantity).toFixed(2)}</strong>
       </div>)}
-      <footer><span>{order.shipping === 'express' ? 'Express' : 'Standard'} delivery · ${order.delivery.toFixed(2)}</span><strong>Total ${order.total.toFixed(2)}</strong></footer>
+      <footer><span>{order.shipping === 'express' ? 'Express' : 'Standard'} delivery · KES {order.delivery.toFixed(2)}</span><strong>Total KES {order.total.toFixed(2)}</strong></footer>
     </article>)}
   </section>;
 }

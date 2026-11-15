@@ -1,28 +1,23 @@
 import { authenticate, readSession, clearSession } from './auth';
-const { webcrypto } = require('crypto');
-const { TextEncoder } = require('util');
-beforeAll(() => {
-  Object.defineProperty(global, 'crypto', { value: webcrypto, configurable: true });
-  global.TextEncoder = TextEncoder;
+import { api } from './api';
+jest.mock('./api', () => ({ api: jest.fn() }));
+beforeEach(() => jest.resetAllMocks());
+test('registers and logs in through the backend', async () => {
+  const details = { name: 'Amina', email: 'amina@example.com', password: 'flowers123' };
+  api.mockResolvedValue({ name: 'Amina', email: details.email });
+  await authenticate(details, true);
+  expect(api).toHaveBeenCalledWith('/auth/signup', { method: 'POST', body: JSON.stringify(details) });
+  await authenticate(details, false);
+  expect(api).toHaveBeenLastCalledWith('/auth/login', { method: 'POST', body: JSON.stringify(details) });
 });
-beforeEach(() => localStorage.clear());
-test('registers, persists, rejects duplicate accounts and wrong passwords, and logs in again', async () => {
-  const details = { name: ' Amina ', email: ' Amina@example.com ', password: 'flowers123' };
-  await expect(authenticate(details, true)).resolves.toEqual({ name: 'Amina', email: 'amina@example.com' });
-  expect(localStorage.getItem('maua.accounts.v1')).not.toContain('flowers123');
-  expect(readSession().name).toBe('Amina');
-  clearSession();
-  expect(readSession()).toBeNull();
-  await expect(authenticate(details, true)).rejects.toThrow('already exists');
-  await expect(authenticate({ ...details, password: 'wrongpassword' }, false)).rejects.toThrow('incorrect');
-  await expect(authenticate(details, false)).resolves.toEqual({ name: 'Amina', email: 'amina@example.com' });
+test('restores cookie sessions and treats unauthorized as signed out', async () => {
+  api.mockRejectedValueOnce({ status: 401 });
+  await expect(readSession()).resolves.toBeNull();
+  api.mockRejectedValueOnce(new Error('Network unavailable'));
+  await expect(readSession()).rejects.toThrow('Network unavailable');
 });
-test('ignores malformed session storage', () => {
-  localStorage.setItem('maua.session.v1', '{');
-  expect(readSession()).toBeNull();
-});
-test('distinguishes an unregistered email from an incorrect password without creating an account', async () => {
-  await expect(authenticate({ email: 'new@example.com', password: 'flowers123' }, false)).rejects.toMatchObject({ code: 'ACCOUNT_NOT_FOUND' });
-  expect(localStorage.getItem('maua.accounts.v1')).toBeNull();
-  expect(readSession()).toBeNull();
+test('logout revokes the server session', async () => {
+  api.mockResolvedValue({ ok: true });
+  await clearSession();
+  expect(api).toHaveBeenCalledWith('/auth/logout', { method: 'POST' });
 });

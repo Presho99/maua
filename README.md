@@ -1,70 +1,49 @@
-# Getting Started with Create React App
+# Maua
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React flower shop with an Express API, simulated M-Pesa checkout and protected shop administration. Node.js 22 is recommended.
 
-## Available Scripts
+## Local development
 
-In the project directory, you can run:
+Run `npm install`. Copy `.env.example` to `.env.local` and set `ADMIN_EMAIL` and a unique `ADMIN_PASSWORD` of at least 12 characters. Run `npm run server` and `npm start` in separate terminals. Open http://localhost:3000 and log in with the configured administrator credentials, or sign up as a customer.
 
-### `npm start`
+Without `DATABASE_URL`, local records persist in `server/data/store.json`. Runtime data and environment files are ignored by Git.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Vercel deployment only
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The frontend and API deploy together to Vercel using `vercel.json` and `api/index.js`. No separate backend host is needed.
 
-### `npm test`
+1. Import this repository into your Vercel project, using Create React App, build command `npm run build` and output directory `build`.
+2. Connect a PostgreSQL database through Vercel Marketplace (for example Neon). Add its pooled connection URL as the server-only `DATABASE_URL` environment variable. Vercel functions cannot persist a local JSON database. The database provider is managed through the Vercel integration; the app itself runs only on Vercel.
+3. Set server-only `ADMIN_EMAIL`, `ADMIN_PASSWORD` and `APP_ORIGIN` (the exact public HTTPS origin, no trailing slash). Never prefix credentials with `REACT_APP_`.
+4. Deploy from Vercel or run `npx vercel --prod` from an authenticated CLI session. Redeploy after changing environment variables.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The API initializes `maua_store` automatically. It stores application collections in a JSONB document under row `id = 1`. Transactions and a row lock serialize writes across function instances. This is suitable for a small shop; larger deployments should use separate relational tables.
 
-### `npm run build`
+## See and manage the database
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Log in as the configured administrator and choose **Admin & database** in the navigation. Tabs expose products, customers, orders, simulated payments, email previews, sessions and audit records. Search, refresh or download a JSON export. Password hashes and session tokens are excluded.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Administrators can add, edit and delete products, control availability and collection placement, change prices and product details, promote or demote other accounts, revoke sessions and move orders through allowed fulfillment statuses. Every administrative change is audited. Product deletion preserves historical order snapshots.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+For a direct database view, open your database integration from the Vercel project's Storage tab and its provider's SQL console:
 
-### `npm run eject`
+```sql
+SELECT jsonb_pretty(data) FROM maua_store WHERE id = 1;
+SELECT jsonb_array_elements(data->'flowers') AS product FROM maua_store WHERE id = 1;
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Direct SQL access includes authentication data; keep access restricted to the database owner. Use the in-app viewer for ordinary administration.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## M-Pesa simulation
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Add flowers to the bag, enter a Kenyan mobile number and select **Simulate M-Pesa payment**. Choose approval, failure or cancellation. Approval confirms the order, creates a `SIM` receipt and saves an email preview. Failed and cancelled attempts can be retried. No real STK push, PIN collection, email delivery or money transfer occurs. All displayed amounts are KES; existing numeric catalog prices are retained.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The checkout uses the M-Pesa logo downloaded from [Safaricom's published logo asset](https://safaricom-staging.scanad.com/corporate-upgrade/images/lifeimages/M-PESA-logo-pdf.pdf), rasterized and cropped locally.
 
-## Learn More
+## Checks
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```sh
+npm run test:server
+CI=true npm test -- --watchAll=false --runInBand
+npm run build
+```

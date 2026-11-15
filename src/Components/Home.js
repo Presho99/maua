@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { flowers } from '../flowers';
+import { api } from '../lib/api';
 import { useCartContext } from '../App';
 import Cart from './Cart';
 import AddToBagButton from './AddToBagButton';
@@ -31,8 +31,8 @@ function BouquetDetails({ flower, onClose, onAdd }) {
 
 function BouquetPrice({ flower }) {
   return <span className="bouquet-price">
-    <strong>${Number(flower.price).toFixed(2)}</strong>
-    {flower.originalPrice && <><span className="sr-only">Original price </span><del>${Number(flower.originalPrice).toFixed(2)}</del></>}
+    <strong>KES {Number(flower.price).toFixed(2)}</strong>
+    {flower.originalPrice && <><span className="sr-only">Original price </span><del>KES {Number(flower.originalPrice).toFixed(2)}</del></>}
   </span>;
 }
 
@@ -52,11 +52,13 @@ function BouquetCard({ flower, onSelect, onAdd }) {
 const collections = [
   { id: 'best-sellers', title: 'Best sellers', description: 'Our signature picks for a beautiful gesture.', includes: flower => flower.bestSeller },
   { id: 'on-sale', title: 'On sale', description: 'A little more beauty for a little less.', includes: flower => flower.originalPrice },
-  { id: 'new-arrivals', title: 'New arrivals', description: 'Fresh additions to fall in love with.', includes: flower => flower.newArrival },
+  { id: 'new-arrivals', title: 'New arrivals', description: 'Fresh additions to fall in love with.', includes: flower => flower.newArrival || (!flower.bestSeller && !flower.originalPrice) },
 ];
 
 export default function Home({ user, search, view, onViewChange, cartIsShown, hideCartHandler }) {
   const { setItems, wishlist, history } = useCartContext();
+  const [flowers, setFlowers] = useState([]);
+  useEffect(() => { let active = true; api('/flowers').then(data => { if (active) setFlowers(data); }).catch(err => { if (active) setNotice(err.message); }); return () => { active = false; }; }, [view]);
   const [notice, setNotice] = useState('');
   const [category, setCategory] = useState(categories[0]);
   const [selected, setSelected] = useState(null);

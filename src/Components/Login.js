@@ -19,19 +19,19 @@ export default function Login({ onLogin }) {
     if (password.trim().length < 8) return setError('Use a password with at least 8 non-padding characters.');
     setBusy(true);
     try { onLogin(await authenticate({ name, email, password }, signup)); }
-    catch (err) { setAccountMissing(err.code === 'ACCOUNT_NOT_FOUND'); setError(err.message.includes('account') || err.message.includes('incorrect') ? err.message : 'Unable to access local accounts. Enable browser storage and try again.'); }
+    catch (err) { setAccountMissing(err.code === 'ACCOUNT_NOT_FOUND'); setError(err.message); }
     finally { setBusy(false); }
   }
   return <main className="auth-page"><div className="auth-card">
     <div className="auth-art"><img src="/assets/peonies.jpeg" alt="A lush bouquet of pink peonies" /><div><span>MAUA · FLOWERS WITH FEELING</span><h2>A little beauty.<br />A lasting feeling.</h2><p>Thoughtful bouquets for your everyday and your extraordinary.</p></div></div>
-    <section className="auth-form"><a className="brand" href="/">Maua<span>✳</span></a><h1>{signup ? 'Make yourself at home' : 'Welcome back!'}</h1><p>{signup ? 'Create your account and find your next favourite bouquet.' : 'A beautiful day starts with flowers. Log in below.'}</p>
+    <section className="auth-form"><a className="brand" href="/">Maua</a><h1>{signup ? 'Make yourself at home' : 'Welcome back!'}</h1>{signup && <p>Create your account and find your next favourite bouquet.</p>}
     <form onSubmit={submit} noValidate>
       {signup && <label>Your name<input autoComplete="name" value={name} onChange={e => setName(e.target.value)} maxLength={60} required /></label>}
       <label>Email address<input type="email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} required /></label>
       <label>Password<div className="password-field"><input type={visible ? 'text' : 'password'} autoComplete={signup ? 'new-password' : 'current-password'} value={password} onChange={e => setPassword(e.target.value)} required minLength={8} /><button type="button" aria-label={visible ? 'Hide password' : 'Show password'} onClick={() => setVisible(!visible)}>{visible ? 'Hide' : 'Show'}</button></div></label>
-      <small>{signup ? 'Use at least 8 characters.' : 'Your profile is remembered on this browser.'}</small>
+      <small>{signup ? 'Use at least 8 characters.' : 'Sign in to access your saved wishlist and orders.'}</small>
       <button className="primary" disabled={busy}>{busy ? 'Please wait…' : signup ? 'Create account' : 'Log in'}</button>
-    </form><p className="auth-switch">{signup ? 'Already have an account?' : 'New to Maua?'} <button type="button" onClick={() => { setSignup(!signup); setError(''); setAccountMissing(false); setPassword(''); }}>{signup ? 'Log in' : 'Sign up'}</button></p><small className="local-note">Accounts are saved only in this browser at this app address.</small></section>
+    </form><p className="auth-switch">{signup ? 'Already have an account?' : 'New to Maua?'} <button type="button" onClick={() => { setSignup(!signup); setError(''); setAccountMissing(false); setPassword(''); }}>{signup ? 'Log in' : 'Sign up'}</button></p><small className="local-note">Your account and orders are saved securely on the server.</small></section>
   </div>{error && <ErrorModal message={error} onClose={() => setError('')}>
     {accountMissing && <button type="button" className="text-button" onClick={() => { setSignup(true); setAccountMissing(false); setError(''); setPassword(''); }}>Create an account with this email</button>}
   </ErrorModal>}</main>;

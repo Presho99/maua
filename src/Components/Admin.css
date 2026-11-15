@@ -1,0 +1,24 @@
+.site-footer { margin-top: 3rem; padding: 2.5rem max(5vw, 1rem); background: #f5e8df; color: #48392f; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; border-top: 1px solid #e5d5cb; }
+.site-footer p { font-size: .9rem; line-height: 1.7; }
+.admin-metrics { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 1rem; margin: 2rem 0; }
+.admin-metrics > div, .admin-record, .notification-card { padding: 1.4rem; border: 1px solid #e4d5ca; border-radius: 14px; background: #fffdf9; }
+.admin-metrics strong { display: block; font-size: 1.8rem; margin-top: .7rem; }
+.admin-toolbar, .admin-tabs { display: flex; gap: .7rem; flex-wrap: wrap; margin: 1.5rem 0; align-items: center; }
+.admin-page button, .admin-page select, .admin-page input { padding: .65rem; border: 1px solid #d8c4b4; border-radius: 8px; background: white; color: #48392f; }
+.admin-page label { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
+.admin-tabs button[aria-pressed="true"] { background: #684734; color: white; }
+.admin-records { display: grid; gap: 1rem; }
+.admin-record h3 { overflow-wrap: anywhere; }
+.admin-record form { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+.admin-record details { margin-top: 1rem; }
+.admin-record pre { max-height: 360px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font-size: .8rem; }
+.notification-card { margin-top: 1.2rem; overflow-wrap: anywhere; }
+.payment-simulation { padding: 1.5rem; }
+.payment-simulation label { display: grid; gap: .4rem; margin: 1rem 0; }
+.payment-simulation input, .order-summary input[type="tel"] { width: 100%; padding: .8rem; border: 1px solid #d8c4b4; border-radius: 8px; box-sizing: border-box; }
+.payment-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin: 1rem 0; }
+.payment-actions button { padding: .8rem 1rem; border-radius: 8px; border: 1px solid #d8c4b4; }
+
+.mpesa-logo { display: block; width: 140px; height: auto; margin: 1rem 0; }
+.product-form { padding: 1rem 0; display: flex; flex-wrap: wrap; gap: 1rem; }
+.product-form h3 { width: 100%; }

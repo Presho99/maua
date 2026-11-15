@@ -1,1 +1,8 @@
-Fix the appearance of the error messages especially on the login page. Put it on a modal that is exitable easily using an x button or when anyone clicks anywhere apart from the card containing the error message in the modal. eNSURE THE LOGIN AND SIGNUP FORM FITS INSIDE THE SCREEN  EVEN IN SMALL DEVICES AND DOESNT APPEAR TO BE LEAVING
+. 
+Register
+2. Login
+3. Browse product catalogue
+4. Load products onto the shopping cart
+5. Simulate payment
+6. Use more than one device to shop
+
