@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import Loader from '../Loader';
 import { api } from '../lib/api';
 import { useCartContext } from '../App';
 import Cart from './Cart';
@@ -58,7 +59,8 @@ const collections = [
 export default function Home({ user, search, view, onViewChange, cartIsShown, hideCartHandler }) {
   const { setItems, wishlist, history } = useCartContext();
   const [flowers, setFlowers] = useState([]);
-  useEffect(() => { let active = true; api('/flowers').then(data => { if (active) setFlowers(data); }).catch(err => { if (active) setNotice(err.message); }); return () => { active = false; }; }, [view]);
+  const [catalogLoading, setCatalogLoading] = useState(true);
+  useEffect(() => { let active = true; setCatalogLoading(true); api('/flowers').then(data => { if (active) setFlowers(data); }).catch(err => { if (active) setNotice(err.message); }).finally(() => { if (active) setCatalogLoading(false); }); return () => { active = false; }; }, [view]);
   const [notice, setNotice] = useState('');
   const [category, setCategory] = useState(categories[0]);
   const [selected, setSelected] = useState(null);
@@ -81,7 +83,7 @@ export default function Home({ user, search, view, onViewChange, cartIsShown, hi
     {view === 'history' ? <History orders={history} search={search} onShop={() => onViewChange('shop')} /> : <>
     <div ref={collection} className="store-collections">
       <p className="bag-notice" role="status">{notice}</p>
-      {showCollections ? <>
+      {catalogLoading ? <Loader label="Loading bouquets…" /> : showCollections ? <>
         <nav className="collection-links" aria-label="Bouquet collections">{collections.map(group => <a href={`#${group.id}`} key={group.id}>{group.title}<span aria-hidden="true"> ↗</span></a>)}</nav>
         {collections.map(group => <section className="product-section" id={group.id} key={group.id} aria-labelledby={`${group.id}-title`}>
           <div className="collection-heading"><div><h2 id={`${group.id}-title`}>{group.title}</h2><p>{group.description}</p></div><span>{flowers.filter(group.includes).length} bouquets</span></div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, createContext, useContext } from 'react';
 import Admin from './Components/Admin';
 import './Components/Admin.css';
+import Loader from './Loader';
 import Home from './Components/Home';
 import Login from './Components/Login';
 import MainHeader from './Components/MainHeader';
@@ -46,7 +47,7 @@ function Shop({ user, onLogout }) {
   return <cartContext.Provider value={{ items, setItems, wishlist, toggleWishlist, history, recordOrder, refreshOrders: async () => setHistory(await api('/orders')) }}>
     <MainHeader user={user} onLogout={onLogout} search={search} onSearch={setSearch} view={view} onViewChange={changeView} showCartHandler={() => setCartIsShown(true)} />
     {error && <p className="error" role="alert">{error}</p>}
-    {!ready && !error && <p role="status">Loading your wishlist and orders…</p>}
+    {!ready && !error && <Loader label="Loading your wishlist and orders…" />}
     {view === 'admin' && user.role === 'admin' ? <Admin /> : <Home user={user} search={search} view={view} onViewChange={changeView} cartIsShown={cartIsShown} hideCartHandler={() => setCartIsShown(false)} />}
   </cartContext.Provider>;
 }
@@ -65,6 +66,6 @@ export default function App() {
     try { await clearSession(); setUser(null); setError(''); }
     catch (err) { setError(err.message); }
   }
-  if (loading) return <p role="status">Loading your account…</p>;
+  if (loading) return <Loader label="Loading your account…" fullPage />;
   return <>{error && <p className="error" role="alert">{error}</p>}{user ? <Shop key={user.email} user={user} onLogout={logout} /> : <Login onLogin={setUser} />}</>;
 }

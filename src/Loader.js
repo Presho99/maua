@@ -1,21 +1,10 @@
+import React from 'react';
+import './Loader.css';
 
-import React from "react";
-import "./Loader.css";
-
-function Loader() {
-  return (
-    <div className="loader">
-      <div
-        className="logo-container"
-        style={{ backgroundImage: `url(/logo.webp)` }}
-      >
-        {/* <img src="/assets/logo.webp"/> */}
-        <div className="logo-text">
-          <h1>Maua.</h1>
-        </div>
-      </div>
-    </div>
-  );
+export default function Loader({ label = 'Loading…', fullPage = false, inline = false }) {
+  const Tag = inline ? 'span' : 'div';
+  return <Tag className={`app-loader${fullPage ? ' app-loader-page' : ''}${inline ? ' app-loader-inline' : ''}`} role="status" aria-live="polite">
+    <span className="app-spinner" aria-hidden="true" />
+    <span>{label}</span>
+  </Tag>;
 }
-
-export default Loader;

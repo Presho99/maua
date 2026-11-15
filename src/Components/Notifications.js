@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Loader from '../Loader';
 import { api } from '../lib/api';
 export default function Notifications() {
   const [messages, setMessages] = useState(null);
@@ -10,7 +11,7 @@ export default function Notifications() {
   }, []);
   return <main className="home"><h1>Email notifications</h1><p>Preview your simulated order confirmation emails. Nothing is sent to an external inbox.</p>
     {error && <p role="alert" className="error">{error}</p>}
-    {!messages && !error && <p role="status">Loading notifications…</p>}
+    {!messages && !error && <Loader label="Loading notifications…" />}
     {messages?.length === 0 && <p>No email previews yet. Approve a demo M-Pesa payment to receive one.</p>}
     {messages?.map(message => <article className="notification-card" key={message.id}><small>SIMULATED EMAIL · {new Date(message.date).toLocaleString()}</small><h2>{message.subject}</h2><p>To: {message.to}</p><p>{message.body}</p></article>)}
   </main>;
