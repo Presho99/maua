@@ -9,7 +9,18 @@ function normalize(db = {}) {
 function createStore({ dataFile, databaseUrl }) {
   if (databaseUrl) {
     const { Pool } = require('pg');
-    const pool = new Pool({ connectionString: databaseUrl, max: 2, connectionTimeoutMillis: 10000, idleTimeoutMillis: 10000 });
+    const options = { connectionString: databaseUrl, max: 2, connectionTimeoutMillis: 10000, idleTimeoutMillis: 10000 };
+    const ca = process.env.DATABASE_SSL_CA?.trim().replace(/\\n/g, '\n');
+    if (ca) {
+      const url = new URL(databaseUrl);
+      // pg applies URL SSL settings after pool options, replacing the CA if present.
+      for (const key of ['ssl', 'sslmode', 'sslcert', 'sslkey', 'sslrootcert']) {
+        url.searchParams.delete(key);
+      }
+      options.connectionString = url.toString();
+      options.ssl = { ca, rejectUnauthorized: true };
+    }
+    const pool = new Pool(options);
     let initialized;
     async function initialize() {
       await pool.query('CREATE TABLE IF NOT EXISTS maua_store (id INTEGER PRIMARY KEY CHECK (id = 1), data JSONB NOT NULL)');

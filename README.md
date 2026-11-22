@@ -8,13 +8,15 @@ Run `npm install`. Copy `.env.example` to `.env.local` and set `ADMIN_EMAIL` and
 
 Without `DATABASE_URL`, local records persist in `server/data/store.json`. Runtime data and environment files are ignored by Git.
 
+For Supabase, set `DATABASE_URL` to the pooled connection URL and add `DATABASE_SSL_CA` to `.env.local`. Use the full PEM certificate downloaded from [Supabase Database Settings](https://supabase.com/docs/guides/platform/ssl-enforcement), including the BEGIN and END lines. In `.env.local`, wrap the value in double quotes. Both actual newlines and escaped `\n` work. When this CA is set, the API removes `ssl`, `sslmode`, `sslcert`, `sslkey` and `sslrootcert` from the URL before passing it to PostgreSQL, then verifies the certificate chain and hostname.
+
 ## Vercel deployment only
 
 The frontend and API deploy together to Vercel using `vercel.json` and `api/index.js`. No separate backend host is needed.
 
 1. Import this repository into your Vercel project, using Create React App, build command `npm run build` and output directory `build`.
-2. Connect a PostgreSQL database through Vercel Marketplace (for example Neon). Add its pooled connection URL as the server-only `DATABASE_URL` environment variable. Vercel functions cannot persist a local JSON database. The database provider is managed through the Vercel integration; the app itself runs only on Vercel.
-3. Set server-only `ADMIN_EMAIL`, `ADMIN_PASSWORD` and `APP_ORIGIN` (the exact public HTTPS origin, no trailing slash). Never prefix credentials with `REACT_APP_`.
+2. Add the pooled PostgreSQL URL as `DATABASE_URL` in Vercel's Production environment. For Supabase, also set `DATABASE_SSL_CA` to the full PEM certificate. Paste the certificate value directly, without surrounding quotes. Vercel functions require a persistent PostgreSQL database.
+3. Set `ADMIN_EMAIL`, `ADMIN_PASSWORD` and `APP_ORIGIN` (the exact public HTTPS origin, without a trailing slash). Keep these settings and both database variables server-only by using the exact names shown.
 4. Deploy from Vercel or run `npx vercel --prod` from an authenticated CLI session. Redeploy after changing environment variables.
 
 The API initializes `maua_store` automatically. It stores application collections in a JSONB document under row `id = 1`. Transactions and a row lock serialize writes across function instances. This is suitable for a small shop; larger deployments should use separate relational tables.

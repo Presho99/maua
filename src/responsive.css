@@ -82,7 +82,7 @@ input, select, button { min-width: 0; }
   .auth-form .brand { margin-bottom: 24px; }
   .detail-photo > img { height: clamp(220px, 45dvh, 420px); }
   .cart-row { display: grid; grid-template-columns: 50px minmax(0, 1fr) 70px; }
-  .cart-row > strong { grid-column: 2 / -1; justify-self: end; }
+  .cart-row > strong { grid-column: 2 / -1; justify-self: flex-end; }
   .order-summary { padding: 20px; }
   .history-item { flex-wrap: wrap; }
   .history-item > span { flex-basis: calc(100% - 60px); }
