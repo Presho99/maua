@@ -16,3 +16,6 @@
 @media(prefers-reduced-motion:reduce){.add-to-bag,.heart-button{transition:none}.add-to-bag:active,.heart-button:active,.heart-button:hover{transform:none}}
 .bouquet-card>.bouquet-image{padding:0}.bouquet-card .add-to-bag{min-width:110px}.cart-badge{line-height:1}.history-card time{overflow-wrap:anywhere}
 @media(max-width:600px){.bouquet-card .add-to-bag{min-width:90px}}
+
+.brand-wordmark { width: 3.4em; height: auto; vertical-align: middle; }
+.brand .brand-wordmark { display: block; width: 4em; }

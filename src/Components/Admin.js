@@ -165,7 +165,7 @@ export default function Admin() {
     (rows.find((order) => order.id === selectedId) || rows[0]);
   return (
     <main className="admin-page home">
-      <p className="eyebrow">MAUA OPERATIONS</p>
+      <p className="eyebrow"><img className="brand-wordmark" src="/assets/name.png" alt="Maua" width="2172" height="724" /> OPERATIONS</p>
       <div className="admin-heading">
         <div>
           <h1>Shop dashboard</h1>

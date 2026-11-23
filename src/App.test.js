@@ -107,6 +107,17 @@ test('checkout calculates quantity and delivery and rejects invalid quantities',
   fireEvent.click(screen.getAllByRole('button', { name: /Add to bag/ })[0]);
   fireEvent.click(screen.getByRole('button', { name: 'Cart (1 items)' }));
   expect(screen.getByText('KES 27.98')).toBeInTheDocument();
+  const decrease = screen.getByRole('button', { name: 'Decrease Dahlia quantity' });
+  const increase = screen.getByRole('button', { name: 'Increase Dahlia quantity' });
+  const quantity = screen.getByLabelText('Dahlia quantity');
+  expect(decrease).toBeDisabled();
+  fireEvent.click(increase);
+  expect(quantity).toHaveValue(2);
+  expect(screen.getByText('KES 50.97')).toBeInTheDocument();
+  fireEvent.click(decrease);
+  expect(quantity).toHaveValue(1);
+  fireEvent.change(quantity, { target: { value: '99' } });
+  expect(increase).toBeDisabled();
   fireEvent.change(screen.getByLabelText('Dahlia quantity'), { target: { value: '-1' } });
   expect(screen.getByRole('alert')).toHaveTextContent('whole number');
   fireEvent.change(screen.getByLabelText('Dahlia quantity'), { target: { value: '2' } });
